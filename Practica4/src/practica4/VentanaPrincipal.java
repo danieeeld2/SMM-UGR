@@ -4,6 +4,8 @@
  */
 package practica4;
 
+import java.awt.Color;
+
 /**
  *
  * @author daniel
@@ -40,7 +42,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Azul = new javax.swing.JToggleButton();
         Verde = new javax.swing.JToggleButton();
         jCheckBox1 = new javax.swing.JCheckBox();
-        lienzo2 = new practica4.Lienzo();
+        lienzo = new practica4.Lienzo();
+        Estado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -69,6 +72,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         BotonRectangulo.setFocusable(false);
         BotonRectangulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BotonRectangulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BotonRectangulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonRectanguloActionPerformed(evt);
+            }
+        });
         jToolBar1.add(BotonRectangulo);
 
         TipoDibujo.add(BotonElipse);
@@ -76,6 +84,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         BotonElipse.setFocusable(false);
         BotonElipse.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BotonElipse.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BotonElipse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonElipseActionPerformed(evt);
+            }
+        });
         jToolBar1.add(BotonElipse);
 
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -83,25 +96,55 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Negro.setBackground(new java.awt.Color(0, 0, 0));
         TipoColor.add(Negro);
         Negro.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        Negro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NegroActionPerformed(evt);
+            }
+        });
 
         TipoColor.add(Blanco);
         Blanco.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        Blanco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BlancoActionPerformed(evt);
+            }
+        });
 
         Rojo.setBackground(new java.awt.Color(255, 0, 51));
         TipoColor.add(Rojo);
         Rojo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        Rojo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RojoActionPerformed(evt);
+            }
+        });
 
         Amarillo.setBackground(new java.awt.Color(255, 255, 102));
         TipoColor.add(Amarillo);
         Amarillo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        Amarillo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AmarilloActionPerformed(evt);
+            }
+        });
 
         Azul.setBackground(new java.awt.Color(0, 51, 255));
         TipoColor.add(Azul);
         Azul.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        Azul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AzulActionPerformed(evt);
+            }
+        });
 
         Verde.setBackground(new java.awt.Color(51, 255, 51));
         TipoColor.add(Verde);
         Verde.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        Verde.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerdeActionPerformed(evt);
+            }
+        });
 
         jCheckBox1.setText("Relleno");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +172,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(Amarillo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Verde, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jCheckBox1)
                 .addContainerGap())
         );
@@ -152,18 +195,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        lienzo2.setBackground(new java.awt.Color(255, 255, 255));
+        lienzo.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout lienzo2Layout = new javax.swing.GroupLayout(lienzo2);
-        lienzo2.setLayout(lienzo2Layout);
-        lienzo2Layout.setHorizontalGroup(
-            lienzo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout lienzoLayout = new javax.swing.GroupLayout(lienzo);
+        lienzo.setLayout(lienzoLayout);
+        lienzoLayout.setHorizontalGroup(
+            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        lienzo2Layout.setVerticalGroup(
-            lienzo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 170, Short.MAX_VALUE)
+        lienzoLayout.setVerticalGroup(
+            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 159, Short.MAX_VALUE)
         );
+
+        Estado.setText("Barra de Estado");
 
         jMenu1.setText("Archivo");
 
@@ -189,18 +234,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lienzo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lienzo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Estado, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -211,12 +259,50 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void BotonLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLineaActionPerformed
-        // TODO add your handling code here:
+        lienzo.setTipo(Lienzo.posiblesTipos.LINEA);
+        Estado.setText("Línea");
     }//GEN-LAST:event_BotonLineaActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
+        if(lienzo.isRelleno())
+            lienzo.setRelleno(false);
+        else
+            lienzo.setRelleno(true);
     }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void RojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RojoActionPerformed
+        lienzo.setColor(Color.red);
+    }//GEN-LAST:event_RojoActionPerformed
+
+    private void NegroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NegroActionPerformed
+        lienzo.setColor(Color.black);
+    }//GEN-LAST:event_NegroActionPerformed
+
+    private void AzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AzulActionPerformed
+        lienzo.setColor(Color.blue);
+    }//GEN-LAST:event_AzulActionPerformed
+
+    private void BlancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlancoActionPerformed
+        lienzo.setColor(Color.white);
+    }//GEN-LAST:event_BlancoActionPerformed
+
+    private void AmarilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmarilloActionPerformed
+        lienzo.setColor(Color.yellow);
+    }//GEN-LAST:event_AmarilloActionPerformed
+
+    private void VerdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerdeActionPerformed
+        lienzo.setColor(Color.green);
+    }//GEN-LAST:event_VerdeActionPerformed
+
+    private void BotonRectanguloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRectanguloActionPerformed
+        lienzo.setTipo(Lienzo.posiblesTipos.RECTANGULO);
+        Estado.setText("Rectángulo");
+    }//GEN-LAST:event_BotonRectanguloActionPerformed
+
+    private void BotonElipseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonElipseActionPerformed
+        lienzo.setTipo(Lienzo.posiblesTipos.ELIPSE);
+        Estado.setText("Elipse");
+    }//GEN-LAST:event_BotonElipseActionPerformed
 
     
 
@@ -227,6 +313,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JToggleButton BotonElipse;
     private javax.swing.JToggleButton BotonLinea;
     private javax.swing.JToggleButton BotonRectangulo;
+    private javax.swing.JLabel Estado;
     private javax.swing.JToggleButton Negro;
     private javax.swing.JToggleButton Rojo;
     private javax.swing.ButtonGroup TipoColor;
@@ -240,6 +327,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
-    private practica4.Lienzo lienzo2;
+    private practica4.Lienzo lienzo;
     // End of variables declaration//GEN-END:variables
 }

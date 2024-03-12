@@ -60,9 +60,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jToolBar1" max="32767" attributes="0"/>
+          <Component id="jToolBar1" pref="400" max="32767" attributes="0"/>
+          <Component id="lienzo" alignment="0" max="32767" attributes="0"/>
+          <Component id="Estado" alignment="0" max="32767" attributes="0"/>
           <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
-          <Component id="lienzo2" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -70,9 +71,11 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jToolBar1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lienzo2" max="32767" attributes="0"/>
+              <Component id="lienzo" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="Estado" min="-2" pref="11" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -113,6 +116,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonRectanguloActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="BotonElipse">
           <Properties>
@@ -126,6 +132,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonElipseActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -159,7 +168,7 @@
                           <Component id="Verde" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="245" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -204,6 +213,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NegroActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="Blanco">
           <Properties>
@@ -216,6 +228,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BlancoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="Rojo">
           <Properties>
@@ -231,6 +246,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RojoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="Amarillo">
           <Properties>
@@ -246,6 +264,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AmarilloActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="Azul">
           <Properties>
@@ -261,6 +282,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AzulActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="Verde">
           <Properties>
@@ -276,6 +300,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VerdeActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBox1">
           <Properties>
@@ -287,7 +314,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="practica4.Lienzo" name="lienzo2">
+    <Container class="practica4.Lienzo" name="lienzo">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -302,10 +329,15 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="170" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="159" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JLabel" name="Estado">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Barra de Estado"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

@@ -4,17 +4,71 @@
  */
 package practica4;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
 /**
  *
  * @author daniel
  */
 public class Lienzo extends javax.swing.JPanel {
-
+    
+    private Shape forma = new Line2D.Float(0,0,0,0);
+    private Color color = Color.black;
+    private boolean relleno = false;
+    public enum posiblesTipos {
+        LINEA,
+        RECTANGULO,
+        ELIPSE
+    };
+    private posiblesTipos tipo = posiblesTipos.LINEA;
+    private Point2D pPressed = new Point2D.Float(0, 0);
+            
     /**
      * Creates new form Lienzo
      */
     public Lienzo() {
         initComponents();
+    }
+    
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2d = (Graphics2D)g;
+        g2d.setPaint(color);
+        if(relleno)
+            g2d.fill(forma);
+        g2d.draw(forma);
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public boolean isRelleno() {
+        return relleno;
+    }
+
+    public void setRelleno(boolean relleno) {
+        this.relleno = relleno;
+    }
+
+    public posiblesTipos getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(posiblesTipos tipo) {
+        this.tipo = tipo;
     }
 
     /**
@@ -25,6 +79,17 @@ public class Lienzo extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -37,6 +102,33 @@ public class Lienzo extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        switch (tipo){
+            case LINEA:
+                forma = new Line2D.Float(evt.getPoint(),evt.getPoint());
+                break;
+            case ELIPSE:
+                forma = new Ellipse2D.Float(evt.getPoint().x,evt.getPoint().y,0,0);
+                pPressed = evt.getPoint();
+                break;
+            case RECTANGULO:
+                forma = new Rectangle2D.Float(evt.getPoint().x,evt.getPoint().y,0,0);
+                pPressed = evt.getPoint();
+                break;
+        }
+        
+    }//GEN-LAST:event_formMousePressed
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        if(forma instanceof Line2D)
+            ((Line2D)forma).setLine(((Line2D)forma).getP1(), evt.getPoint());
+        if(forma instanceof Ellipse2D)
+            ((Ellipse2D)forma).setFrameFromDiagonal(pPressed.getX(),pPressed.getY(),evt.getPoint().x,evt.getPoint().y);
+        if(forma instanceof Rectangle2D)
+            ((Rectangle2D)forma).setFrameFromDiagonal(pPressed.getX(),pPressed.getY(),evt.getPoint().x,evt.getPoint().y);
+        this.repaint();
+    }//GEN-LAST:event_formMouseDragged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
