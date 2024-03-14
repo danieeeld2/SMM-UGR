@@ -5,6 +5,7 @@
 package practica4;
 
 import java.awt.Color;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -46,9 +47,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Estado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        Nuevo = new javax.swing.JMenuItem();
+        Abrir = new javax.swing.JMenuItem();
+        Guardar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PaintBásico");
@@ -212,19 +213,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenu1.setText("Archivo");
 
-        jMenuItem1.setText("Nuevo");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        Nuevo.setText("Nuevo");
+        Nuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                NuevoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(Nuevo);
 
-        jMenuItem2.setText("Abrir");
-        jMenu1.add(jMenuItem2);
+        Abrir.setText("Abrir");
+        Abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AbrirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Abrir);
 
-        jMenuItem3.setText("Guardar");
-        jMenu1.add(jMenuItem3);
+        Guardar.setText("Guardar");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Guardar);
 
         jMenuBar1.add(jMenu1);
 
@@ -254,9 +265,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoActionPerformed
+        lienzo.limpiarPanel();
+    }//GEN-LAST:event_NuevoActionPerformed
 
     private void BotonLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLineaActionPerformed
         lienzo.setTipo(Lienzo.posiblesTipos.LINEA);
@@ -304,9 +315,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Estado.setText("Elipse");
     }//GEN-LAST:event_BotonElipseActionPerformed
 
+    private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int seleccion = fileChooser.showOpenDialog(this);
+        if(seleccion == JFileChooser.APPROVE_OPTION){
+            // Para el futuro
+        }
+    }//GEN-LAST:event_AbrirActionPerformed
+
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int seleccion = fileChooser.showOpenDialog(this);
+        if(seleccion == JFileChooser.APPROVE_OPTION){
+            // Para el futuro
+        }
+    }//GEN-LAST:event_GuardarActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Abrir;
     private javax.swing.JToggleButton Amarillo;
     private javax.swing.JToggleButton Azul;
     private javax.swing.JToggleButton Blanco;
@@ -314,7 +342,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JToggleButton BotonLinea;
     private javax.swing.JToggleButton BotonRectangulo;
     private javax.swing.JLabel Estado;
+    private javax.swing.JMenuItem Guardar;
     private javax.swing.JToggleButton Negro;
+    private javax.swing.JMenuItem Nuevo;
     private javax.swing.JToggleButton Rojo;
     private javax.swing.ButtonGroup TipoColor;
     private javax.swing.ButtonGroup TipoDibujo;
@@ -322,9 +352,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
     private practica4.Lienzo lienzo;
