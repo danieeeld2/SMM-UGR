@@ -42,7 +42,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Amarillo = new javax.swing.JToggleButton();
         Azul = new javax.swing.JToggleButton();
         Verde = new javax.swing.JToggleButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        Relleno = new javax.swing.JCheckBox();
+        Mover = new javax.swing.JCheckBox();
         lienzo = new practica4.Lienzo();
         Estado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -147,10 +148,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("Relleno");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        Relleno.setText("Relleno");
+        Relleno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                RellenoActionPerformed(evt);
+            }
+        });
+
+        Mover.setText("Mover");
+        Mover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MoverActionPerformed(evt);
             }
         });
 
@@ -174,7 +182,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Verde, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jCheckBox1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Relleno)
+                    .addComponent(Mover))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -184,16 +194,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Negro, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Rojo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Relleno))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Blanco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Amarillo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Verde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jCheckBox1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(Verde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Mover, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
         lienzo.setBackground(new java.awt.Color(255, 255, 255));
@@ -206,7 +214,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         lienzoLayout.setVerticalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 159, Short.MAX_VALUE)
+            .addGap(0, 151, Short.MAX_VALUE)
         );
 
         Estado.setText("Barra de Estado");
@@ -274,12 +282,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Estado.setText("Línea");
     }//GEN-LAST:event_BotonLineaActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        if(lienzo.isRelleno())
-            lienzo.setRelleno(false);
-        else
-            lienzo.setRelleno(true);
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void RellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RellenoActionPerformed
+        lienzo.setRelleno(Relleno.isSelected());
+    }//GEN-LAST:event_RellenoActionPerformed
 
     private void RojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RojoActionPerformed
         lienzo.setColor(Color.red);
@@ -331,6 +336,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_GuardarActionPerformed
 
+    private void MoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MoverActionPerformed
+        lienzo.setMover(Mover.isSelected());
+    }//GEN-LAST:event_MoverActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -343,13 +352,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JToggleButton BotonRectangulo;
     private javax.swing.JLabel Estado;
     private javax.swing.JMenuItem Guardar;
+    private javax.swing.JCheckBox Mover;
     private javax.swing.JToggleButton Negro;
     private javax.swing.JMenuItem Nuevo;
+    private javax.swing.JCheckBox Relleno;
     private javax.swing.JToggleButton Rojo;
     private javax.swing.ButtonGroup TipoColor;
     private javax.swing.ButtonGroup TipoDibujo;
     private javax.swing.JToggleButton Verde;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

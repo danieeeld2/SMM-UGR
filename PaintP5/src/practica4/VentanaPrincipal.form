@@ -175,7 +175,10 @@
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="Relleno" min="-2" max="-2" attributes="0"/>
+                      <Component id="Mover" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -188,18 +191,15 @@
                       <Component id="Negro" min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="Rojo" min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="Azul" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="Relleno" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="Blanco" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="Amarillo" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
                       <Component id="Verde" alignment="1" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="Mover" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -310,12 +310,20 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VerdeActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+        <Component class="javax.swing.JCheckBox" name="Relleno">
           <Properties>
             <Property name="text" type="java.lang.String" value="Relleno"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RellenoActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="Mover">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Mover"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MoverActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -335,7 +343,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="159" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="151" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>

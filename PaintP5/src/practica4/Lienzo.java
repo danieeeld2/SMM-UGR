@@ -8,21 +8,27 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
+import java.util.ArrayList;
+import java.util.List;
+import practica4.MiLinea;
+import practica4.MiElipse;
+        
 /**
  *
  * @author daniel
  */
 public class Lienzo extends javax.swing.JPanel {
-    
+    private List<Shape> vShape = new ArrayList();
     private Shape forma = new Line2D.Float(0,0,0,0);
     private Color color = Color.black;
     private boolean relleno = false;
+    private boolean mover = false;
     public enum posiblesTipos {
         LINEA,
         RECTANGULO,
@@ -44,15 +50,30 @@ public class Lienzo extends javax.swing.JPanel {
         Graphics2D g2d = (Graphics2D)g;
         g2d.setPaint(color);
         // g2d.setStroke(new BasicStroke(2f));
-        if(relleno)
-            g2d.fill(forma);
-        g2d.draw(forma);
+        for(Shape s:vShape){
+            if(relleno)
+                g2d.fill(s);
+            g2d.draw(s);
+        }
+    }
+    
+    private Shape figuraSeleccionada(Point2D p){
+        for(Shape s:vShape)
+            if(s.contains(p)) return s;
+        return null;
     }
     
     public void limpiarPanel() {
-        this.removeAll();
-        forma = new Line2D.Float(0,0,0,0);
+        vShape.clear();
         this.repaint();
+    }
+
+    public boolean isMover() {
+        return mover;
+    }
+
+    public void setMover(boolean mover) {
+        this.mover = mover;
     }
 
     public Color getColor() {
@@ -112,29 +133,47 @@ public class Lienzo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        switch (tipo){
+        if(mover){
+            forma = figuraSeleccionada(evt.getPoint());
+        } else {
+            switch (tipo){
             case LINEA:
-                forma = new Line2D.Float(evt.getPoint(),evt.getPoint());
+                // forma = new Line2D.Float(evt.getPoint(),evt.getPoint());
+                forma = new MiLinea(evt.getPoint(), evt.getPoint());
                 break;
             case ELIPSE:
-                forma = new Ellipse2D.Float(evt.getPoint().x,evt.getPoint().y,0,0);
+                // forma = new Ellipse2D.Float(evt.getPoint().x,evt.getPoint().y,0,0);
+                forma = new MiElipse(evt.getPoint(), 0, 0);
                 pPressed = evt.getPoint();
                 break;
             case RECTANGULO:
-                forma = new Rectangle2D.Float(evt.getPoint().x,evt.getPoint().y,0,0);
+                forma = new Rectangle(evt.getPoint());
                 pPressed = evt.getPoint();
                 break;
+            }
+            vShape.add(forma);
         }
-        
     }//GEN-LAST:event_formMousePressed
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
-        if(forma instanceof Line2D)
-            ((Line2D)forma).setLine(((Line2D)forma).getP1(), evt.getPoint());
-        if(forma instanceof Ellipse2D)
-            ((Ellipse2D)forma).setFrameFromDiagonal(pPressed.getX(),pPressed.getY(),evt.getPoint().x,evt.getPoint().y);
-        if(forma instanceof Rectangle2D)
-            ((Rectangle2D)forma).setFrameFromDiagonal(pPressed.getX(),pPressed.getY(),evt.getPoint().x,evt.getPoint().y);
+        if(mover){
+            if(forma != null && forma instanceof Rectangle){
+                ((Rectangle) forma).setLocation(evt.getPoint());
+            }
+            if(forma != null && forma instanceof MiLinea){
+                ((MiLinea) forma).setLocation(evt.getPoint());
+            }
+            if(forma != null && forma instanceof MiElipse){
+                ((MiElipse) forma).setLocation(evt.getPoint());
+            }
+        } else {
+            if(forma instanceof MiLinea)
+                ((MiLinea)forma).setLine(((MiLinea)forma).getP1(), evt.getPoint());
+            if(forma instanceof MiElipse)
+                ((MiElipse)forma).setFrameFromDiagonal(pPressed.getX(),pPressed.getY(),evt.getPoint().x,evt.getPoint().y);
+            if(forma instanceof Rectangle2D)
+                ((Rectangle2D)forma).setFrameFromDiagonal(pPressed.getX(),pPressed.getY(),evt.getPoint().x,evt.getPoint().y);
+        }
         this.repaint();
     }//GEN-LAST:event_formMouseDragged
 
