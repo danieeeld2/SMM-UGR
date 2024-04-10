@@ -5,7 +5,9 @@
 package practica4;
 
 import java.awt.Color;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import sm.dav.graficos.Lienzo2D;
 
 /**
  *
@@ -31,25 +33,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         TipoDibujo = new javax.swing.ButtonGroup();
-        TipoColor = new javax.swing.ButtonGroup();
         jToolBar1 = new javax.swing.JToolBar();
         BotonLinea = new javax.swing.JToggleButton();
         BotonRectangulo = new javax.swing.JToggleButton();
         BotonElipse = new javax.swing.JToggleButton();
+        Fantasma = new javax.swing.JToggleButton();
+        Mover = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
-        Negro = new javax.swing.JToggleButton();
-        Blanco = new javax.swing.JToggleButton();
-        Rojo = new javax.swing.JToggleButton();
-        Amarillo = new javax.swing.JToggleButton();
-        Azul = new javax.swing.JToggleButton();
-        Verde = new javax.swing.JToggleButton();
-        Relleno = new javax.swing.JCheckBox();
-        Mover = new javax.swing.JCheckBox();
-        Alisar = new javax.swing.JCheckBox();
-        Transparencia = new javax.swing.JCheckBox();
-        Grosor = new javax.swing.JSpinner();
-        lienzo = new practica4.Lienzo();
+        Paleta = new javax.swing.JButton();
+        Relleno = new javax.swing.JToggleButton();
+        Transparencia = new javax.swing.JToggleButton();
+        Alisar = new javax.swing.JToggleButton();
+        Grosor = new javax.swing.JSlider();
         Estado = new javax.swing.JLabel();
+        lienzo = new sm.dav.graficos.Lienzo2D();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         Nuevo = new javax.swing.JMenuItem();
@@ -97,153 +94,90 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(BotonElipse);
 
-        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        Negro.setBackground(new java.awt.Color(0, 0, 0));
-        TipoColor.add(Negro);
-        Negro.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        Negro.addActionListener(new java.awt.event.ActionListener() {
+        TipoDibujo.add(Fantasma);
+        Fantasma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/fantasma.png"))); // NOI18N
+        Fantasma.setFocusable(false);
+        Fantasma.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Fantasma.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Fantasma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NegroActionPerformed(evt);
+                FantasmaActionPerformed(evt);
             }
         });
+        jToolBar1.add(Fantasma);
 
-        TipoColor.add(Blanco);
-        Blanco.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        Blanco.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BlancoActionPerformed(evt);
-            }
-        });
-
-        Rojo.setBackground(new java.awt.Color(255, 0, 51));
-        TipoColor.add(Rojo);
-        Rojo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        Rojo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RojoActionPerformed(evt);
-            }
-        });
-
-        Amarillo.setBackground(new java.awt.Color(255, 255, 102));
-        TipoColor.add(Amarillo);
-        Amarillo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        Amarillo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AmarilloActionPerformed(evt);
-            }
-        });
-
-        Azul.setBackground(new java.awt.Color(0, 51, 255));
-        TipoColor.add(Azul);
-        Azul.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        Azul.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AzulActionPerformed(evt);
-            }
-        });
-
-        Verde.setBackground(new java.awt.Color(51, 255, 51));
-        TipoColor.add(Verde);
-        Verde.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        Verde.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VerdeActionPerformed(evt);
-            }
-        });
-
-        Relleno.setText("Relleno");
-        Relleno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RellenoActionPerformed(evt);
-            }
-        });
-
-        Mover.setText("Mover");
+        Mover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/seleccion.png"))); // NOI18N
+        Mover.setFocusable(false);
+        Mover.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Mover.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         Mover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MoverActionPerformed(evt);
             }
         });
+        jToolBar1.add(Mover);
 
-        Alisar.setText("Alisar");
-        Alisar.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setMaximumSize(new java.awt.Dimension(40, 40));
+        jPanel1.setPreferredSize(new java.awt.Dimension(30, 30));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        Paleta.setBackground(new java.awt.Color(0, 0, 0));
+        Paleta.setForeground(new java.awt.Color(0, 0, 0));
+        Paleta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AlisarActionPerformed(evt);
+                PaletaActionPerformed(evt);
             }
         });
+        jPanel1.add(Paleta, java.awt.BorderLayout.CENTER);
 
-        Transparencia.setText("Transparencia");
+        jToolBar1.add(jPanel1);
+
+        Relleno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/rellenar.png"))); // NOI18N
+        Relleno.setFocusable(false);
+        Relleno.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Relleno.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Relleno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RellenoActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Relleno);
+
+        Transparencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/transparencia.png"))); // NOI18N
+        Transparencia.setFocusable(false);
+        Transparencia.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Transparencia.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         Transparencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TransparenciaActionPerformed(evt);
             }
         });
+        jToolBar1.add(Transparencia);
 
-        Grosor.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
+        Alisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/alisar.png"))); // NOI18N
+        Alisar.setFocusable(false);
+        Alisar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Alisar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Alisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AlisarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Alisar);
+
+        Grosor.setMaximum(50);
+        Grosor.setMinimum(1);
+        Grosor.setValue(1);
+        Grosor.setMaximumSize(new java.awt.Dimension(100, 16));
+        Grosor.setPreferredSize(new java.awt.Dimension(100, 16));
         Grosor.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 GrosorStateChanged(evt);
             }
         });
+        jToolBar1.add(Grosor);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Negro, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Rojo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Grosor, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Blanco, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Amarillo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Verde, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Alisar)
-                    .addComponent(Mover))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Relleno)
-                    .addComponent(Transparencia))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Negro, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Rojo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Relleno)
-                        .addComponent(Mover)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Blanco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Amarillo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Verde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Alisar)
-                            .addComponent(Transparencia))
-                        .addContainerGap())))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(Grosor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        Estado.setText("Barra de Estado");
 
         lienzo.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -251,14 +185,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lienzo.setLayout(lienzoLayout);
         lienzoLayout.setHorizontalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         lienzoLayout.setVerticalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 145, Short.MAX_VALUE)
+            .addGap(0, 326, Short.MAX_VALUE)
         );
-
-        Estado.setText("Barra de Estado");
 
         jMenu1.setText("Archivo");
 
@@ -294,10 +226,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(Estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,8 +239,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Estado, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -319,45 +251,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_NuevoActionPerformed
 
     private void BotonLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLineaActionPerformed
-        lienzo.setTipo(Lienzo.posiblesTipos.LINEA);
+        lienzo.setTipo(Lienzo2D.posiblesTipos.LINEA);
         Estado.setText("Línea");
     }//GEN-LAST:event_BotonLineaActionPerformed
 
-    private void RellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RellenoActionPerformed
-        lienzo.setRelleno(Relleno.isSelected());
-    }//GEN-LAST:event_RellenoActionPerformed
-
-    private void RojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RojoActionPerformed
-        lienzo.setColor(Color.red);
-    }//GEN-LAST:event_RojoActionPerformed
-
-    private void NegroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NegroActionPerformed
-        lienzo.setColor(Color.black);
-    }//GEN-LAST:event_NegroActionPerformed
-
-    private void AzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AzulActionPerformed
-        lienzo.setColor(Color.blue);
-    }//GEN-LAST:event_AzulActionPerformed
-
-    private void BlancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlancoActionPerformed
-        lienzo.setColor(Color.white);
-    }//GEN-LAST:event_BlancoActionPerformed
-
-    private void AmarilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmarilloActionPerformed
-        lienzo.setColor(Color.yellow);
-    }//GEN-LAST:event_AmarilloActionPerformed
-
-    private void VerdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerdeActionPerformed
-        lienzo.setColor(Color.green);
-    }//GEN-LAST:event_VerdeActionPerformed
-
     private void BotonRectanguloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRectanguloActionPerformed
-        lienzo.setTipo(Lienzo.posiblesTipos.RECTANGULO);
+        lienzo.setTipo(Lienzo2D.posiblesTipos.RECTANGULO);
         Estado.setText("Rectángulo");
     }//GEN-LAST:event_BotonRectanguloActionPerformed
 
     private void BotonElipseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonElipseActionPerformed
-        lienzo.setTipo(Lienzo.posiblesTipos.ELIPSE);
+        lienzo.setTipo(Lienzo2D.posiblesTipos.ELIPSE);
         Estado.setText("Elipse");
     }//GEN-LAST:event_BotonElipseActionPerformed
 
@@ -377,52 +281,61 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_GuardarActionPerformed
 
+    private void FantasmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FantasmaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FantasmaActionPerformed
+
+    private void RellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RellenoActionPerformed
+        lienzo.setRelleno(Relleno.isSelected());
+    }//GEN-LAST:event_RellenoActionPerformed
+
     private void MoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MoverActionPerformed
         lienzo.setMover(Mover.isSelected());
     }//GEN-LAST:event_MoverActionPerformed
-
-    private void AlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlisarActionPerformed
-        lienzo.setAlisar(Alisar.isSelected());
-        lienzo.repaint();
-    }//GEN-LAST:event_AlisarActionPerformed
 
     private void TransparenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransparenciaActionPerformed
         lienzo.setTransparencia(Transparencia.isSelected());
         lienzo.repaint();
     }//GEN-LAST:event_TransparenciaActionPerformed
 
+    private void AlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlisarActionPerformed
+        lienzo.setAlisar(Alisar.isSelected());
+        lienzo.repaint();
+    }//GEN-LAST:event_AlisarActionPerformed
+
     private void GrosorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_GrosorStateChanged
         lienzo.setTrazo((int) Grosor.getValue());
         lienzo.repaint();
     }//GEN-LAST:event_GrosorStateChanged
 
+    private void PaletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PaletaActionPerformed
+         Color color = JColorChooser.showDialog(this, "Elije un color", Color.RED);
+         lienzo.setColor(color);
+         Paleta.setBackground(color);
+    }//GEN-LAST:event_PaletaActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Abrir;
-    private javax.swing.JCheckBox Alisar;
-    private javax.swing.JToggleButton Amarillo;
-    private javax.swing.JToggleButton Azul;
-    private javax.swing.JToggleButton Blanco;
+    private javax.swing.JToggleButton Alisar;
     private javax.swing.JToggleButton BotonElipse;
     private javax.swing.JToggleButton BotonLinea;
     private javax.swing.JToggleButton BotonRectangulo;
     private javax.swing.JLabel Estado;
-    private javax.swing.JSpinner Grosor;
+    private javax.swing.JToggleButton Fantasma;
+    private javax.swing.JSlider Grosor;
     private javax.swing.JMenuItem Guardar;
-    private javax.swing.JCheckBox Mover;
-    private javax.swing.JToggleButton Negro;
+    private javax.swing.JToggleButton Mover;
     private javax.swing.JMenuItem Nuevo;
-    private javax.swing.JCheckBox Relleno;
-    private javax.swing.JToggleButton Rojo;
-    private javax.swing.ButtonGroup TipoColor;
+    private javax.swing.JButton Paleta;
+    private javax.swing.JToggleButton Relleno;
     private javax.swing.ButtonGroup TipoDibujo;
-    private javax.swing.JCheckBox Transparencia;
-    private javax.swing.JToggleButton Verde;
+    private javax.swing.JToggleButton Transparencia;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
-    private practica4.Lienzo lienzo;
+    private sm.dav.graficos.Lienzo2D lienzo;
     // End of variables declaration//GEN-END:variables
 }
