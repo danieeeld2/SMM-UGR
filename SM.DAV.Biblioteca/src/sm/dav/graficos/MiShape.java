@@ -19,6 +19,7 @@ abstract class MiShape {
     protected boolean relleno;
     protected boolean alisar;
     protected boolean transparencia;
+    protected boolean editar;
 
     public Color getColor() {
         return color;
@@ -58,6 +59,14 @@ abstract class MiShape {
 
     public void setTransparencia(boolean transparencia) {
         this.transparencia = transparencia;
+    }
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
     }
     
     public abstract void draw(Graphics2D g2d);

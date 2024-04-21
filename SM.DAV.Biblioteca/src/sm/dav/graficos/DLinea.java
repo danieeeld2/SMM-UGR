@@ -5,10 +5,14 @@
 package sm.dav.graficos;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -71,7 +75,7 @@ public class DLinea extends MiShape {
     
 
     @Override
-    public void draw(Graphics2D g2d) {
+    public void draw(Graphics2D g2d) {        
         g2d.setColor(this.getColor());
         g2d.setStroke(this.getTrazo());
         
@@ -93,6 +97,15 @@ public class DLinea extends MiShape {
         
         Line2D.Float linea = new Line2D.Float(x1, y1, x2, y2);
         g2d.draw(linea);
+        
+        if(editar){
+            g2d.setColor(Color.RED);
+            float[] dashPattern = {5, 2}; // Patrón de guiones: 5 píxeles sólidos, 2 píxeles de espacio
+            Stroke stroke = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dashPattern, 0);
+            g2d.setStroke(stroke);
+            Ellipse2D.Float circulo = new Ellipse2D.Float(x1-10, y1-10, 20, 20);
+            g2d.draw(circulo);
+        }
     }
 
     @Override

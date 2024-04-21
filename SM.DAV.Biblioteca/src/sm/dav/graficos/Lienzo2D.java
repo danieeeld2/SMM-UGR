@@ -6,10 +6,14 @@ package sm.dav.graficos;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +30,15 @@ public class Lienzo2D extends javax.swing.JPanel {
     public enum posiblesTipos {
         LINEA,
         RECTANGULO,
-        ELIPSE
+        ELIPSE,
+        FANTASMA
     };
     private posiblesTipos tipo = posiblesTipos.LINEA;
     private Point2D pPressed = new Point2D.Float(0, 0);
     private boolean transparencia = false;
     private boolean alisar = false;
     Stroke trazo = new BasicStroke(1f);
+    private BufferedImage img;
     /**
      * Creates new form Lienzo
      */
@@ -44,6 +50,17 @@ public class Lienzo2D extends javax.swing.JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
+        if (img != null) {
+            g2d.drawImage(img, 0, 0, this);
+            g2d.clip(new Rectangle2D.Float(0, 0, img.getHeight(), img.getWidth()));
+            // Dibujar limite de recorte
+            float[] dashPattern = {5, 5};
+            BasicStroke dashedStroke = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dashPattern, 0);
+            g2d.setStroke(dashedStroke);
+            g2d.setColor(Color.BLACK);
+            g2d.draw(new Line2D.Float(0.0f, img.getHeight(), img.getWidth(), img.getHeight()));
+            g2d.draw(new Line2D.Float(img.getWidth(), 0.0f, img.getWidth(), img.getHeight()));
+        }
         for (MiShape s : listaFiguras) {
             s.draw(g2d);
         }
@@ -53,6 +70,13 @@ public class Lienzo2D extends javax.swing.JPanel {
         for(MiShape s:listaFiguras)
             if(s.contains(p)) return s;
         return null;
+    }
+
+    public void SalirModoEditar() {
+        if(forma != null){
+            forma.setEditar(false);
+            this.repaint();
+        }
     }
     
     public void limpiarPanel() {
@@ -73,6 +97,12 @@ public class Lienzo2D extends javax.swing.JPanel {
     }
 
     public void setColor(Color color) {
+        if(mover){
+            if(forma != null) {
+                forma.setColor(color);
+                this.repaint();
+            }
+        }
         this.color = color;
     }
 
@@ -81,6 +111,12 @@ public class Lienzo2D extends javax.swing.JPanel {
     }
 
     public void setRelleno(boolean relleno) {
+        if(mover){
+            if(forma != null) {
+                forma.setRelleno(relleno);
+                this.repaint();
+            }
+        }
         this.relleno = relleno;
     }
 
@@ -97,6 +133,12 @@ public class Lienzo2D extends javax.swing.JPanel {
     }
 
     public void setTransparencia(boolean transparencia) {
+        if(mover){
+            if(forma != null) {
+                forma.setTransparencia(transparencia);
+                this.repaint();
+            }
+        }
         this.transparencia = transparencia;
     }
 
@@ -105,6 +147,12 @@ public class Lienzo2D extends javax.swing.JPanel {
     }
 
     public void setAlisar(boolean alisar) {
+        if(mover){
+            if(forma != null) {
+                forma.setAlisar(alisar);
+                this.repaint();
+            }
+        }
         this.alisar = alisar;
     }
 
@@ -113,7 +161,56 @@ public class Lienzo2D extends javax.swing.JPanel {
     }
 
     public void setTrazo(int grosor) {
+        if(mover){
+            if(forma != null) {
+                forma.setTrazo(new BasicStroke((float) grosor));
+                this.repaint();
+            }
+        }
         this.trazo = new BasicStroke((float) grosor);
+    }
+    
+    public void setImage(BufferedImage img) {
+        this.img = img;
+        if (img != null) {
+            setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
+        }
+    }
+
+    public BufferedImage getImage() {
+        return img;
+    }
+    
+    public BufferedImage getPaintedImage() {
+        BufferedImage imgout = new BufferedImage(img.getWidth(),
+                img.getHeight(),
+                img.getType());
+        Graphics2D g2dImagen = imgout.createGraphics();
+        if(img!=null) g2dImagen.drawImage(img,0,0,this);
+        for (MiShape s : listaFiguras) {
+            s.draw(g2dImagen);
+        }
+        return imgout;
+    }
+    
+    public void VolcarSeleccion(){
+        if (mover) { // Modo edición activo
+            if (forma != null && forma.isEditar()) { //Hay una forma que ha sido seleccionada en este modo
+                BufferedImage imgout = new BufferedImage(img.getWidth(),
+                        img.getHeight(),
+                        img.getType());
+                Graphics2D g2dImagen = imgout.createGraphics();
+                if (img != null) {
+                    g2dImagen.drawImage(img, 0, 0, this);
+                }
+                forma.setEditar(false);
+                forma.draw(g2dImagen);
+                listaFiguras.remove(forma);
+                this.img = imgout;
+                this.repaint();
+            }
+        }
+
     }
 
     /**
@@ -131,6 +228,9 @@ public class Lienzo2D extends javax.swing.JPanel {
             }
         });
         addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formMousePressed(evt);
             }
@@ -160,8 +260,15 @@ public class Lienzo2D extends javax.swing.JPanel {
     }//GEN-LAST:event_formMouseDragged
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        if (forma != null) { // Le decimos que saque del modo edición a la última forma
+            forma.setEditar(false);
+        }
         if(mover){
             forma = figuraSeleccionada(evt.getPoint());
+            if(forma != null) {
+                forma.setEditar(true);
+            }
+            this.repaint();
         } else {
             switch (tipo){
             case LINEA -> {
@@ -176,6 +283,9 @@ public class Lienzo2D extends javax.swing.JPanel {
                 // forma = new Rectangle(evt.getPoint());
                 forma = new DRectangulo(evt.getPoint().x, evt.getPoint().y, 0, 0);
                 }
+            case FANTASMA -> {
+                forma = new DFantasma(evt.getPoint().x, evt.getPoint().y);
+                }
             }
             pPressed = evt.getPoint();
             forma.setColor(color);
@@ -183,9 +293,23 @@ public class Lienzo2D extends javax.swing.JPanel {
             forma.setRelleno(relleno);
             forma.setTransparencia(transparencia);
             forma.setTrazo(trazo);
+            forma.setEditar(false);
             listaFiguras.add(forma);
         }
     }//GEN-LAST:event_formMousePressed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        if(mover){
+            if(forma != null) { // Le decimos que saque del modo edición a la última forma
+                forma.setEditar(false);
+            }
+            forma = figuraSeleccionada(evt.getPoint());
+            if(forma != null) {
+                forma.setEditar(true);
+            }
+            this.repaint();
+        }
+    }//GEN-LAST:event_formMouseClicked
                               
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

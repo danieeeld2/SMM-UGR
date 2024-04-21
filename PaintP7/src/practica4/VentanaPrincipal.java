@@ -282,7 +282,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void FantasmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FantasmaActionPerformed
-        // TODO add your handling code here:
+        lienzo.setTipo(Lienzo2D.posiblesTipos.FANTASMA);
+        Estado.setText("Fantasma");
     }//GEN-LAST:event_FantasmaActionPerformed
 
     private void RellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RellenoActionPerformed

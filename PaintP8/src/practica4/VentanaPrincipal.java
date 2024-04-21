@@ -5,8 +5,13 @@
 package practica4;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import javax.swing.event.InternalFrameAdapter;
 import sm.dav.graficos.Lienzo2D;
 
 /**
@@ -14,13 +19,42 @@ import sm.dav.graficos.Lienzo2D;
  * @author daniel
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-
+    private ManejadorVentanaInterna manejador;
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
         setSize(960, 960);
+        // 2) Creamos objeto manejador
+        manejador = new ManejadorVentanaInterna();
+    }
+
+    private Lienzo2D getSelectedLienzo() {
+        VentanaInterna vi;
+        vi = (VentanaInterna) escritorio.getSelectedFrame();
+        return vi != null ? vi.getLienzo2D() : null;
+    }
+    
+    private void setAtributosSelectedLienzo(Lienzo2D l){
+        if(l != null){
+            this.Alisar.setSelected(l.isAlisar());
+            this.Mover.setSelected(l.isMover());
+            this.Transparencia.setSelected(l.isTransparencia());
+            this.Relleno.setSelected(l.isRelleno());
+            this.Paleta.setBackground(l.getColor());
+            this.Grosor.setValue(l.getTrazo().hashCode());
+            l.setTipo(Lienzo2D.posiblesTipos.LINEA);
+            this.BotonLinea.setSelected(true);
+        }
+    }
+    
+    // 1) Definimos clase manejadora
+    private class ManejadorVentanaInterna extends InternalFrameAdapter {
+        public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            VentanaInterna vi = (VentanaInterna) evt.getInternalFrame();
+            setAtributosSelectedLienzo(vi.getLienzo2D());
+        }
     }
 
     /**
@@ -45,8 +79,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Transparencia = new javax.swing.JToggleButton();
         Alisar = new javax.swing.JToggleButton();
         Grosor = new javax.swing.JSlider();
+        Volcar = new javax.swing.JButton();
         Estado = new javax.swing.JLabel();
-        lienzo = new sm.dav.graficos.Lienzo2D();
+        escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         Nuevo = new javax.swing.JMenuItem();
@@ -106,6 +141,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(Fantasma);
 
+        TipoDibujo.add(Mover);
         Mover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/seleccion.png"))); // NOI18N
         Mover.setFocusable(false);
         Mover.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -177,19 +213,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(Grosor);
 
+        Volcar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/volcado.png"))); // NOI18N
+        Volcar.setFocusable(false);
+        Volcar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Volcar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Volcar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VolcarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Volcar);
+
         Estado.setText("Barra de Estado");
 
-        lienzo.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout lienzoLayout = new javax.swing.GroupLayout(lienzo);
-        lienzo.setLayout(lienzoLayout);
-        lienzoLayout.setHorizontalGroup(
-            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
+        escritorio.setLayout(escritorioLayout);
+        escritorioLayout.setHorizontalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        lienzoLayout.setVerticalGroup(
-            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 326, Short.MAX_VALUE)
+        escritorioLayout.setVerticalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 462, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Archivo");
@@ -226,19 +271,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
             .addComponent(Estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(escritorio)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(escritorio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Estado, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -247,74 +289,161 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoActionPerformed
-        lienzo.limpiarPanel();
+        VentanaInterna vi = new VentanaInterna();
+        escritorio.add(vi);
+        vi.setVisible(true);
+        setAtributosSelectedLienzo(vi.getLienzo2D());
+        
+        // 2) Enlazar generador con manejador
+        vi.addInternalFrameListener(manejador);
+        
+        BufferedImage img;
+        img = new BufferedImage(400,400,BufferedImage.TYPE_INT_RGB);
+        
+        // Pintamos de blanco
+        Graphics2D g2d = img.createGraphics();
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
+        g2d.dispose();
+        
+        vi.getLienzo2D().setImage(img);
     }//GEN-LAST:event_NuevoActionPerformed
 
     private void BotonLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLineaActionPerformed
-        lienzo.setTipo(Lienzo2D.posiblesTipos.LINEA);
-        Estado.setText("Línea");
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setMover(Mover.isSelected());
+            lienzo.SalirModoEditar();
+            lienzo.setTipo(Lienzo2D.posiblesTipos.LINEA);
+            Estado.setText("Línea");
+        }
     }//GEN-LAST:event_BotonLineaActionPerformed
 
     private void BotonRectanguloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRectanguloActionPerformed
-        lienzo.setTipo(Lienzo2D.posiblesTipos.RECTANGULO);
-        Estado.setText("Rectángulo");
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setMover(Mover.isSelected());
+            lienzo.SalirModoEditar();
+            lienzo.setTipo(Lienzo2D.posiblesTipos.RECTANGULO);
+            Estado.setText("Rectángulo");
+        }
     }//GEN-LAST:event_BotonRectanguloActionPerformed
 
     private void BotonElipseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonElipseActionPerformed
-        lienzo.setTipo(Lienzo2D.posiblesTipos.ELIPSE);
-        Estado.setText("Elipse");
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setMover(Mover.isSelected());
+            lienzo.SalirModoEditar();
+            lienzo.setTipo(Lienzo2D.posiblesTipos.ELIPSE);
+            Estado.setText("Elipse");
+        }
     }//GEN-LAST:event_BotonElipseActionPerformed
 
     private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         int seleccion = fileChooser.showOpenDialog(this);
-        if(seleccion == JFileChooser.APPROVE_OPTION){
-            // Para el futuro
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            try {
+                File f = fileChooser.getSelectedFile();
+                BufferedImage img = ImageIO.read(f);
+                VentanaInterna vi = new VentanaInterna();
+                vi.getLienzo2D().setImage(img);
+                vi.addInternalFrameListener(manejador);
+                this.escritorio.add(vi);
+                vi.setTitle(f.getName());
+                vi.setVisible(true);
+            } catch (Exception ex) {
+                System.err.println("Error al leer la imagen");
+            }
         }
     }//GEN-LAST:event_AbrirActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        int seleccion = fileChooser.showOpenDialog(this);
-        if(seleccion == JFileChooser.APPROVE_OPTION){
-            // Para el futuro
+        VentanaInterna vi = (VentanaInterna) escritorio.getSelectedFrame();
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getPaintedImage();
+            if (img != null) {
+                JFileChooser dlg = new JFileChooser();
+                int resp = dlg.showSaveDialog(this);
+                if (resp == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        File f = dlg.getSelectedFile();
+                        ImageIO.write(img, "jpg", f);
+                        vi.setTitle(f.getName());
+                    } catch (Exception ex) {
+                        System.err.println("Error al guardar la imagen");
+                        ex.printStackTrace();
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_GuardarActionPerformed
 
     private void FantasmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FantasmaActionPerformed
-        // TODO add your handling code here:
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setTipo(Lienzo2D.posiblesTipos.FANTASMA);
+            lienzo.SalirModoEditar();
+            lienzo.setMover(Mover.isSelected());
+            Estado.setText("Fantasma");
+        }
     }//GEN-LAST:event_FantasmaActionPerformed
 
     private void RellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RellenoActionPerformed
-        lienzo.setRelleno(Relleno.isSelected());
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setRelleno(Relleno.isSelected());
+        }
     }//GEN-LAST:event_RellenoActionPerformed
 
     private void MoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MoverActionPerformed
-        lienzo.setMover(Mover.isSelected());
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setMover(Mover.isSelected());
+        }
     }//GEN-LAST:event_MoverActionPerformed
 
     private void TransparenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransparenciaActionPerformed
-        lienzo.setTransparencia(Transparencia.isSelected());
-        lienzo.repaint();
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setTransparencia(Transparencia.isSelected());
+            // lienzo.repaint();
+        }
     }//GEN-LAST:event_TransparenciaActionPerformed
 
     private void AlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlisarActionPerformed
-        lienzo.setAlisar(Alisar.isSelected());
-        lienzo.repaint();
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setAlisar(Alisar.isSelected());
+            // lienzo.repaint();
+        }
     }//GEN-LAST:event_AlisarActionPerformed
 
     private void GrosorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_GrosorStateChanged
-        lienzo.setTrazo((int) Grosor.getValue());
-        lienzo.repaint();
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setTrazo((int) Grosor.getValue());
+            // lienzo.repaint();
+        }
     }//GEN-LAST:event_GrosorStateChanged
 
     private void PaletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PaletaActionPerformed
-         Color color = JColorChooser.showDialog(this, "Elije un color", Color.RED);
-         lienzo.setColor(color);
-         Paleta.setBackground(color);
+        Color color = JColorChooser.showDialog(this, "Elije un color", Color.RED);
+        Lienzo2D lienzo = getSelectedLienzo();
+        if (lienzo != null) {
+            lienzo.setColor(color);
+            Paleta.setBackground(color);
+        }
+
     }//GEN-LAST:event_PaletaActionPerformed
 
-    
+    private void VolcarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolcarActionPerformed
+        Lienzo2D lienzo = getSelectedLienzo();
+        if(lienzo != null) {
+            lienzo.VolcarSeleccion();
+        }
+    }//GEN-LAST:event_VolcarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Abrir;
@@ -332,10 +461,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JToggleButton Relleno;
     private javax.swing.ButtonGroup TipoDibujo;
     private javax.swing.JToggleButton Transparencia;
+    private javax.swing.JButton Volcar;
+    private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
-    private sm.dav.graficos.Lienzo2D lienzo;
     // End of variables declaration//GEN-END:variables
 }
