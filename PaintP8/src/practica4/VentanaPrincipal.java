@@ -9,9 +9,15 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.InternalFrameAdapter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.dav.graficos.Lienzo2D;
 
 /**
@@ -289,6 +295,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoActionPerformed
+        BufferedImage img;
+        JPanel panel = new JPanel();
+        JTextField textField1 = new JTextField(5);
+        JTextField textField2 = new JTextField(5);
+        panel.add(new JLabel("Introducir Ancho:"));
+        panel.add(textField1);
+        panel.add(Box.createHorizontalStrut(15)); 
+        panel.add(new JLabel("Introducir Alto:"));
+        panel.add(textField2);
+        int result = JOptionPane.showConfirmDialog(null, panel, "Ingrese el tamaño de la imagen",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
+        if(result == JOptionPane.OK_OPTION){
+            try {
+                int valor1 = Integer.parseInt(textField1.getText());
+                int valor2 = Integer.parseInt(textField2.getText());
+                img = new BufferedImage(valor1,valor2,BufferedImage.TYPE_INT_RGB);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Valores no válidos, se creará tamaño por defecto.", "Error", JOptionPane.ERROR_MESSAGE);
+                img = new BufferedImage(400,400,BufferedImage.TYPE_INT_RGB);
+            }
+        } else {
+            img = new BufferedImage(400,400,BufferedImage.TYPE_INT_RGB);
+        }
+        
         VentanaInterna vi = new VentanaInterna();
         escritorio.add(vi);
         vi.setVisible(true);
@@ -296,9 +327,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
         // 2) Enlazar generador con manejador
         vi.addInternalFrameListener(manejador);
-        
-        BufferedImage img;
-        img = new BufferedImage(400,400,BufferedImage.TYPE_INT_RGB);
         
         // Pintamos de blanco
         Graphics2D g2d = img.createGraphics();
@@ -341,6 +369,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
         JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif", "bmp");
+        fileChooser.setFileFilter(filter);
         int seleccion = fileChooser.showOpenDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             try {
@@ -353,25 +383,42 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 vi.setTitle(f.getName());
                 vi.setVisible(true);
             } catch (Exception ex) {
-                System.err.println("Error al leer la imagen");
+                JOptionPane.showMessageDialog(this, "Error al abrir la imagen: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_AbrirActionPerformed
 
+    private String getFileExtension(File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1).toLowerCase();
+        }
+        return "";
+    }
+ 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         VentanaInterna vi = (VentanaInterna) escritorio.getSelectedFrame();
         if (vi != null) {
             BufferedImage img = vi.getLienzo2D().getPaintedImage();
             if (img != null) {
                 JFileChooser dlg = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif", "bmp");
+                dlg.setFileFilter(filter);
                 int resp = dlg.showSaveDialog(this);
                 if (resp == JFileChooser.APPROVE_OPTION) {
                     try {
                         File f = dlg.getSelectedFile();
-                        ImageIO.write(img, "jpg", f);
+                        String formato = getFileExtension(f);
+                        if (formato == null || formato.isEmpty()) {
+                            formato = "jpg";
+                            f = new File(f.getAbsolutePath() + ".jpg");
+                        }
+                        ImageIO.write(img, formato, f);
                         vi.setTitle(f.getName());
                     } catch (Exception ex) {
-                        System.err.println("Error al guardar la imagen");
+                        JOptionPane.showMessageDialog(this, "Error al guardar la imagen: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         ex.printStackTrace();
                     }
                 }

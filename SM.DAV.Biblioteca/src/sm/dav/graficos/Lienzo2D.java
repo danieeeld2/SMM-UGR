@@ -52,7 +52,7 @@ public class Lienzo2D extends javax.swing.JPanel {
         Graphics2D g2d = (Graphics2D) g;
         if (img != null) {
             g2d.drawImage(img, 0, 0, this);
-            g2d.clip(new Rectangle2D.Float(0, 0, img.getHeight(), img.getWidth()));
+            g2d.clip(new Rectangle2D.Float(0, 0, img.getWidth(), img.getHeight()));
             // Dibujar limite de recorte
             float[] dashPattern = {5, 5};
             BasicStroke dashedStroke = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dashPattern, 0);
