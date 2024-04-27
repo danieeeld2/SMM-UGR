@@ -13,7 +13,7 @@ import java.awt.geom.Point2D;
  *
  * @author daniel
  */
-abstract class MiShape {
+public abstract class MiShape {
     protected Color color;
     protected Stroke trazo;
     protected boolean relleno;

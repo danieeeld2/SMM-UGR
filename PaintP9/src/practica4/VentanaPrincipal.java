@@ -24,6 +24,9 @@ import javax.swing.JTextField;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sm.dav.graficos.Lienzo2D;
+import sm.dav.events.LienzoAdapter;
+import sm.dav.events.LienzoEvent;
+import sm.dav.graficos.MiShape;
 import sm.image.KernelProducer;
 
 /**
@@ -73,6 +76,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             this.BotonLinea.setSelected(true);
         }
     }
+    
+    private void setAtributosSelectedForma(MiShape forma) {
+        if (forma != null) {
+            this.Alisar.setSelected(forma.isAlisar());
+            this.Mover.setSelected(forma.isEditar());
+            this.Transparencia.setSelected(forma.isTransparencia());
+            this.Relleno.setSelected(forma.isRelleno());
+            this.Paleta.setBackground(forma.getColor());
+            this.Grosor.setValue(forma.getTrazo().hashCode());
+        }
+    }
+    
 
     // 1) Definimos clase manejadora
     /**
@@ -88,6 +103,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             VentanaInterna vi = (VentanaInterna) evt.getInternalFrame();
             setAtributosSelectedLienzo(vi.getLienzo2D());
+        }
+    }
+    
+    public class MiManejadorLienzo extends LienzoAdapter{
+        @Override
+        public void shapeAdded(LienzoEvent evt) {
+            System.out.println("Figura " + evt.getForma() + " añadida");
+        }
+        
+        @Override
+        public void shapeSelected(LienzoEvent evt) {
+            setAtributosSelectedForma(evt.getForma());
         }
     }
 
@@ -494,6 +521,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         g2d.dispose();
 
         vi.getLienzo2D().setImage(img);
+        
+        MiManejadorLienzo manejadorLienzo = new MiManejadorLienzo();
+        vi.getLienzo2D().addLienzoListener(manejadorLienzo);
     }//GEN-LAST:event_NuevoActionPerformed
 
     private void BotonLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLineaActionPerformed
@@ -538,6 +568,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 VentanaInterna vi = new VentanaInterna();
                 vi.getLienzo2D().setImage(img);
                 vi.addInternalFrameListener(manejador);
+                MiManejadorLienzo manejadorLienzo = new MiManejadorLienzo();
+                vi.getLienzo2D().addLienzoListener(manejadorLienzo);
                 this.escritorio.add(vi);
                 vi.setTitle(f.getName());
                 vi.setVisible(true);

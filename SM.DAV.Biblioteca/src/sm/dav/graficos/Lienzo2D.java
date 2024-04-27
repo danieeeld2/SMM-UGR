@@ -4,6 +4,8 @@
  */
 package sm.dav.graficos;
 
+import sm.dav.events.LienzoListener;
+import sm.dav.events.LienzoEvent;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -39,6 +41,7 @@ public class Lienzo2D extends javax.swing.JPanel {
     private boolean alisar = false;
     Stroke trazo = new BasicStroke(1f);
     private BufferedImage img;
+    ArrayList<LienzoListener> lienzoEventListeners = new ArrayList<>();
     /**
      * Creates new form Lienzo
      */
@@ -212,6 +215,28 @@ public class Lienzo2D extends javax.swing.JPanel {
         }
 
     }
+    
+    public void addLienzoListener(LienzoListener listener) {
+        if(listener != null) {
+            lienzoEventListeners.add(listener);
+        }
+    }
+    
+    private void notifyShapeSelectedEvent(LienzoEvent evt) {
+        if(!lienzoEventListeners.isEmpty()) {
+            for(LienzoListener listener : lienzoEventListeners) {
+                listener.shapeSelected(evt);
+            }
+        }
+    }
+    
+    private void notifyShapeAddedEvent(LienzoEvent evt) {
+        if(!lienzoEventListeners.isEmpty()) {
+            for(LienzoListener listener : lienzoEventListeners) {
+                listener.shapeAdded(evt);
+            }
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -267,6 +292,7 @@ public class Lienzo2D extends javax.swing.JPanel {
             forma = figuraSeleccionada(evt.getPoint());
             if(forma != null) {
                 forma.setEditar(true);
+                notifyShapeSelectedEvent(new LienzoEvent(this, forma));
             }
             this.repaint();
         } else {
@@ -295,6 +321,7 @@ public class Lienzo2D extends javax.swing.JPanel {
             forma.setTrazo(trazo);
             forma.setEditar(false);
             listaFiguras.add(forma);
+            notifyShapeAddedEvent(new LienzoEvent(this,forma));
         }
     }//GEN-LAST:event_formMousePressed
 
