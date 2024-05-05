@@ -6,10 +6,16 @@ package practica4;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ByteLookupTable;
 import java.awt.image.ColorModel;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.awt.image.LookupOp;
+import java.awt.image.LookupTable;
 import java.awt.image.RescaleOp;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -28,6 +34,7 @@ import sm.dav.events.LienzoAdapter;
 import sm.dav.events.LienzoEvent;
 import sm.dav.graficos.MiShape;
 import sm.image.KernelProducer;
+import sm.image.LookupTableProducer;
 
 /**
  *
@@ -133,6 +140,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             setAtributosSelectedForma(evt.getForma());
         }
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -145,6 +154,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         TipoDibujo = new javax.swing.ButtonGroup();
         jToolBar1 = new javax.swing.JToolBar();
+        Nuevo2 = new javax.swing.JButton();
+        Abrir2 = new javax.swing.JButton();
+        Guardar2 = new javax.swing.JButton();
+        Duplicar = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
         BotonLinea = new javax.swing.JToggleButton();
         BotonRectangulo = new javax.swing.JToggleButton();
         BotonElipse = new javax.swing.JToggleButton();
@@ -170,6 +184,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Filtros = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         Cometa = new javax.swing.JSlider();
+        jSeparator5 = new javax.swing.JToolBar.Separator();
+        ContrasteNormal = new javax.swing.JButton();
+        ContrasteIluminacion = new javax.swing.JButton();
+        ContrasteOscurecimiento = new javax.swing.JButton();
+        OscurecerClaros = new javax.swing.JButton();
+        TLinealGraph = new javax.swing.JButton();
+        TLineal = new javax.swing.JSlider();
+        Negativo = new javax.swing.JButton();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
+        Rotar180 = new javax.swing.JButton();
+        Aumentar = new javax.swing.JButton();
+        Decrementar = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JToolBar.Separator();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         Nuevo = new javax.swing.JMenuItem();
@@ -178,11 +205,58 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         MenuImagenes = new javax.swing.JMenu();
         rescalar = new javax.swing.JMenuItem();
         convolucion = new javax.swing.JMenuItem();
+        tranfAfin = new javax.swing.JMenuItem();
+        lookUp = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PaintBásico");
 
         jToolBar1.setRollover(true);
+
+        Nuevo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/nuevo.png"))); // NOI18N
+        Nuevo2.setFocusable(false);
+        Nuevo2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Nuevo2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Nuevo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Nuevo2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Nuevo2);
+
+        Abrir2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/abrir.png"))); // NOI18N
+        Abrir2.setFocusable(false);
+        Abrir2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Abrir2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Abrir2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Abrir2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Abrir2);
+
+        Guardar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/guardar.png"))); // NOI18N
+        Guardar2.setFocusable(false);
+        Guardar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Guardar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Guardar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Guardar2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Guardar2);
+
+        Duplicar.setText("x2");
+        Duplicar.setFocusable(false);
+        Duplicar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Duplicar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Duplicar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DuplicarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(Duplicar);
+        jToolBar1.add(jSeparator4);
 
         TipoDibujo.add(BotonLinea);
         BotonLinea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/linea.png"))); // NOI18N
@@ -323,11 +397,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 815, Short.MAX_VALUE)
+            .addGap(0, 981, Short.MAX_VALUE)
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 371, Short.MAX_VALUE)
+            .addGap(0, 322, Short.MAX_VALUE)
         );
 
         jToolBar2.setRollover(true);
@@ -413,6 +487,123 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jToolBar2.add(Cometa);
+        jToolBar2.add(jSeparator5);
+
+        ContrasteNormal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/contraste2.png"))); // NOI18N
+        ContrasteNormal.setFocusable(false);
+        ContrasteNormal.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ContrasteNormal.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ContrasteNormal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ContrasteNormalActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(ContrasteNormal);
+
+        ContrasteIluminacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/iluminar.png"))); // NOI18N
+        ContrasteIluminacion.setFocusable(false);
+        ContrasteIluminacion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ContrasteIluminacion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ContrasteIluminacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ContrasteIluminacionActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(ContrasteIluminacion);
+
+        ContrasteOscurecimiento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/ocurecer.png"))); // NOI18N
+        ContrasteOscurecimiento.setFocusable(false);
+        ContrasteOscurecimiento.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ContrasteOscurecimiento.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ContrasteOscurecimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ContrasteOscurecimientoActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(ContrasteOscurecimiento);
+
+        OscurecerClaros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/operador1.png"))); // NOI18N
+        OscurecerClaros.setFocusable(false);
+        OscurecerClaros.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        OscurecerClaros.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        OscurecerClaros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OscurecerClarosActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(OscurecerClaros);
+
+        TLinealGraph.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/operador2.png"))); // NOI18N
+        TLinealGraph.setFocusable(false);
+        TLinealGraph.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        TLinealGraph.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(TLinealGraph);
+
+        TLineal.setMaximum(255);
+        TLineal.setValue(128);
+        TLineal.setMaximumSize(new java.awt.Dimension(70, 16));
+        TLineal.setPreferredSize(new java.awt.Dimension(65, 16));
+        TLineal.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TLinealStateChanged(evt);
+            }
+        });
+        TLineal.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TLinealFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TLinealFocusLost(evt);
+            }
+        });
+        jToolBar2.add(TLineal);
+
+        Negativo.setText("Neg-");
+        Negativo.setToolTipText("");
+        Negativo.setFocusable(false);
+        Negativo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Negativo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Negativo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NegativoActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Negativo);
+        jToolBar2.add(jSeparator6);
+
+        Rotar180.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/rotar180.png"))); // NOI18N
+        Rotar180.setFocusable(false);
+        Rotar180.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Rotar180.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Rotar180.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Rotar180ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Rotar180);
+
+        Aumentar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/mas.png"))); // NOI18N
+        Aumentar.setFocusable(false);
+        Aumentar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Aumentar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Aumentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AumentarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Aumentar);
+
+        Decrementar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/menos.png"))); // NOI18N
+        Decrementar.setFocusable(false);
+        Decrementar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Decrementar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Decrementar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DecrementarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Decrementar);
+        jToolBar2.add(jSeparator7);
 
         jMenu1.setText("Archivo");
 
@@ -460,6 +651,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         MenuImagenes.add(convolucion);
 
+        tranfAfin.setText("AffineTransformOp");
+        tranfAfin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tranfAfinActionPerformed(evt);
+            }
+        });
+        MenuImagenes.add(tranfAfin);
+
+        lookUp.setText("LookUpOp");
+        lookUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lookUpActionPerformed(evt);
+            }
+        });
+        MenuImagenes.add(lookUp);
+
         jMenuBar1.add(MenuImagenes);
 
         setJMenuBar(jMenuBar1);
@@ -468,7 +675,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 981, Short.MAX_VALUE)
             .addComponent(Estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(escritorio)
             .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -951,6 +1158,384 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_CometaStateChanged
 
     /**
+     * Función Action del boton auxiliar para probar el operador de AffineTransform
+     * @param evt 
+     */
+    private void tranfAfinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tranfAfinActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    AffineTransform at = AffineTransform.getScaleInstance(1.5, 1.5);
+                    AffineTransformOp atop = new AffineTransformOp(at, null);
+                    BufferedImage imgdest = atop.filter(img, null);
+                    vi.getLienzo2D().setImage(imgdest);
+                    vi.getLienzo2D().repaint();
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_tranfAfinActionPerformed
+
+    /**
+     * Función Action del boton auxiliar para probar el operador de LookUp
+     * @param evt 
+     */
+    private void lookUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lookUpActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    byte funcionT[] = new byte[256];
+                    for (int x=0; x<256; x++)
+                    funcionT[x] = (byte)(255-x); // Negativo
+                    LookupTable tabla = new ByteLookupTable(0, funcionT);
+                    LookupOp lop = new LookupOp(tabla, null);
+                    BufferedImage imgdest = lop.filter(img, null);
+                    vi.getLienzo2D().setImage(imgdest);
+                    vi.getLienzo2D().repaint();
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_lookUpActionPerformed
+
+    /**
+     * Misma funcionalidad que el boton para crear una nueva Ventana Interna, pero en
+     * la barra de herramientas para que sea más accesible
+     * @param evt 
+     */
+    private void Nuevo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nuevo2ActionPerformed
+        NuevoActionPerformed(evt);
+    }//GEN-LAST:event_Nuevo2ActionPerformed
+
+    /**
+     * Misma funcionalidad que el boton para crear una nueva Ventana Interna, pero en
+     * la barra de herramientas para que sea más accesible
+     * @param evt 
+     */
+    private void Abrir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Abrir2ActionPerformed
+        AbrirActionPerformed(evt);
+    }//GEN-LAST:event_Abrir2ActionPerformed
+
+    /**
+     * Misma funcionalidad que el boton para crear una nueva Ventana Interna, pero en
+     * la barra de herramientas para que sea más accesible
+     * @param evt 
+     */
+    private void Guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar2ActionPerformed
+        GuardarActionPerformed(evt);
+    }//GEN-LAST:event_Guardar2ActionPerformed
+
+    /**
+     * Evento Action del boton ContrasteNormal. Hace uso de LookUpOp y de una función de 
+     * tipo S para crear un contraste "normal", es decir, los valores por debajo de 
+     * 128 los oscurece y, por arriba, los ilumina. Para crear la funcion S se hace
+     * uso de la clase LookupTableProducer
+     * @param evt 
+     */
+    private void ContrasteNormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContrasteNormalActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    int type = LookupTableProducer.TYPE_SFUNCION;
+                    LookupTable lt = LookupTableProducer.createLookupTable(type);
+                    LookupOp lop = new LookupOp(lt, null);
+                    lop.filter(img, img); 
+                    vi.getLienzo2D().repaint();
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_ContrasteNormalActionPerformed
+
+    /**
+     * Evento Action del boton ContrasteIlumincacion. Hace uso de LookUpOp y de una función
+     * del tipo raíz para crear un contraste con iluminación para imágenes oscuras, es decir,
+     * aumenta proporcionalmente los valores de los píxeles para recuperar la información en
+     * imágenes muy oscuras
+     * @param evt 
+     */
+    private void ContrasteIluminacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContrasteIluminacionActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    // int type = LookupTableProducer.TYPE_LOGARITHM;
+                    int type = LookupTableProducer.TYPE_ROOT;
+                    LookupTable lt = LookupTableProducer.createLookupTable(type);
+                    LookupOp lop = new LookupOp(lt, null);
+                    lop.filter(img, img); 
+                    vi.getLienzo2D().repaint();
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }  
+    }//GEN-LAST:event_ContrasteIluminacionActionPerformed
+
+    /**
+     * Evento Action del boton ContrasteOscurecimiento. Hace uso de LookUpOp y de una función
+     * del tipo potencia para crear un contraste con oscurecimiento para imágenes sobre-iluminadas, es decir,
+     * decrementa proporcionalmente los valores de los píxeles para recuperar la información en
+     * imágenes muy iluminadas
+     * @param evt 
+     */
+    private void ContrasteOscurecimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContrasteOscurecimientoActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    int type = LookupTableProducer.TYPE_POWER;
+                    LookupTable lt = LookupTableProducer.createLookupTable(type);
+                    LookupOp lop = new LookupOp(lt, null);
+                    lop.filter(img, img); 
+                    vi.getLienzo2D().repaint();
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }  
+    }//GEN-LAST:event_ContrasteOscurecimientoActionPerformed
+
+    /**
+     * Evento Action del boton Rotar180. Permite rotar 180 grados la imagen. Para ello, hace
+     * uso de la funcion AffineTransform, indicandole un angulo de rotacion de 180 grados y el 
+     * punto sobre el que se va a realizar la transformacion (En este caso, el centro de la imagen)
+     * @param evt 
+     */
+    private void Rotar180ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Rotar180ActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    double r = Math.toRadians(180);
+                    Point c = new Point(img.getWidth() / 2, img.getHeight() / 2);
+                    AffineTransform at = AffineTransform.getRotateInstance(r, c.x, c.y);
+                    AffineTransformOp atop;
+                    atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                    BufferedImage imgdest = atop.filter(img, null);
+                    vi.getLienzo2D().setImage(imgdest);
+                    vi.getLienzo2D().repaint();
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_Rotar180ActionPerformed
+
+    /**
+     * Evento Action del boton Aumentar. Hace un escalado de x1.25 a la imagen, mediante el uso 
+     * de AffineTransformOp
+     * @param evt 
+     */
+    private void AumentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AumentarActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    double factor = 1.25;
+                    AffineTransform at = AffineTransform.getScaleInstance(factor, factor);
+                    AffineTransformOp atop;
+                    atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                    BufferedImage imgdest = atop.filter(img, null);
+                    vi.getLienzo2D().setImage(imgdest);
+                    vi.getLienzo2D().repaint();
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_AumentarActionPerformed
+
+    /**
+     * Evento Action del boton Decrementar. Hace un escalado de x0.75 a la imagen, mediante el uso 
+     * de AffineTransformOp
+     * @param evt 
+     */
+    private void DecrementarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DecrementarActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if (img != null) {
+                try {
+                    double factor = 0.75;
+                    AffineTransform at = AffineTransform.getScaleInstance(factor, factor);
+                    AffineTransformOp atop;
+                    atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                    BufferedImage imgdest = atop.filter(img, null);
+                    vi.getLienzo2D().setImage(imgdest);
+                    vi.getLienzo2D().repaint();
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_DecrementarActionPerformed
+
+    /**
+     * Evento Action del boton Duplicar. Permite generar una nueva ventana interna con una copia de la
+     * imagen que había en la ventana activa
+     * @param evt 
+     */
+    private void DuplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DuplicarActionPerformed
+        VentanaInterna vi_copia = (VentanaInterna) (escritorio.getSelectedFrame());
+        if(vi_copia != null) {
+            BufferedImage img = vi_copia.getLienzo2D().getImage();
+            if(img != null) {
+                // Crear una nueva imagen con canal alfa
+                BufferedImage imgWithAlpha = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = imgWithAlpha.createGraphics();
+                g.drawImage(img, 0, 0, null);
+                g.dispose();
+                
+                VentanaInterna vi = new VentanaInterna();
+                vi.getLienzo2D().setImage(imgWithAlpha);
+                vi.addInternalFrameListener(manejador);
+                MiManejadorLienzo manejadorLienzo = new MiManejadorLienzo();
+                vi.getLienzo2D().addLienzoListener(manejadorLienzo);
+                this.escritorio.add(vi);
+                vi.setVisible(true);
+                
+                vi.setTitle(vi_copia.getTitle() + " copia");
+            }
+        }
+    }//GEN-LAST:event_DuplicarActionPerformed
+
+    /**
+     * Evento FocusGain del deslizador TLineal. Crea una copia de la imagen del lienzo seleccionado
+     * @param evt 
+     */
+    private void TLinealFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TLinealFocusGained
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            ColorModel cm = vi.getLienzo2D().getImage().getColorModel();
+            WritableRaster raster = vi.getLienzo2D().getImage().copyData(null);
+            boolean alfaPre = vi.getLienzo2D().getImage().isAlphaPremultiplied();
+            imgFuente = new BufferedImage(cm, raster, alfaPre, null);
+        }
+    }//GEN-LAST:event_TLinealFocusGained
+
+    /**
+     * Evento FocusLost del deslizador TLineal. Elimina la copia creada durante el FocusGain
+     * @param evt 
+     */
+    private void TLinealFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TLinealFocusLost
+        imgFuente = null;
+    }//GEN-LAST:event_TLinealFocusLost
+
+    /**
+     * Se trata de una funcion a trozos. Cada trozo es una recta. Si a=128 tenemos que las dos rectas
+     * son la misma y que la funcion T=id. Si a>128, entonces la primera recta tiene mayor pendiente que la segunda,
+     * simulando una función raíz o logaritmica, por lo que se va a producir un contraste con oluminación, pero no tan preciso como
+     * si usasemos una función de otro tipo como vimos anteriormente. En el caso extremo a=255 tendremos que los valores de los pixeles por 
+     * encima de 128 irán todos al 255 y, por debajo, tendremos una recta de pendiente extrema que aumentará el valor de los pixeles.
+     * Análogamente, si a es menor que 128, la primera recta tendra menor pendiente que la segunda, simulando una funcion potencia o
+     * exponencial, por lo que se producidad un contraste con oscurecimiento, pero sin tanta precision como si usasemos alguna de las funciones
+     * vistas en ejercicios anteriores. Si a=0, tenemos el caso extremo donde todo los pixeles por debajo de 128 irán al 0 y, por arriba, tendremos
+     * una recta de pendiente extrema que oscurecerá los pixeles
+     * @param evt 
+     */
+    private void TLinealStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TLinealStateChanged
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            int a = TLineal.getValue();
+            try {
+                byte funcionT[] = new byte[256];
+                for (int x = 0; x < 256; x++) {
+                    if (x < 128) {
+                        funcionT[x] = (byte) ((a * x) / 128);
+                    } else {
+                        funcionT[x] = (byte) (((255 - a) * (x - 128) / 127)+a);
+                    }
+                }
+                LookupTable tabla = new ByteLookupTable(0, funcionT);
+                LookupOp lop = new LookupOp(tabla, null);
+                BufferedImage imgdest = lop.filter(imgFuente, null);
+                vi.getLienzo2D().setImage(imgdest);
+                vi.getLienzo2D().repaint();
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getLocalizedMessage());
+            }
+        }
+    }//GEN-LAST:event_TLinealStateChanged
+
+    /**
+     * Ver esbozo de la grafica en https://drive.google.com/file/d/1NKB5vUjZOGsf1OvWPjl8N9ZZbTK2tEbu/view?usp=drive_link
+     * He tomado f(x)=a*b^x y he impuesto que f(128)=128 y f(255)=255. Resolvemos el sistema de ecuaciones y obtenemos
+     * la función deseada. Otra posible opción para resolver este ejercicio es determinar la curva que pasa por 3 puntos. Para ello,
+     * tomaríamos f(x)=ax^2+bx+c e impondríamos que f(128)=128, f(255)=255. La tercera condición es libre, pero para que la función resultante
+     * nos diese un buen resultado, lo propio sería tomar x=128+(255-128)/2 (el punto medio del segundo intervalo de valores) y que su imagen esté en
+     * la recta mediatriz del segmento (128,128) a (255,255) y siempre por debajo de y=x y por encima de y=128. La representación de la situación sería
+     * algo como lo siguiente: https://drive.google.com/file/d/1SOAPvVbcqZHHcbQIJv7Kk0U9vF-CtTuo/view?usp=drive_link
+     * Cuanto mas cerca tomemos el punto de (x,x), menos se apreciara el resultado y, cuanto más esté hacia el otro extremo, se producirá una mayor distorsión
+     * de los colores
+     * @param evt 
+     */
+    private void OscurecerClarosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OscurecerClarosActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                float a = (float) (128.0F / ((255 / 128) * (Math.pow(255 / 128, 1 / 127))));
+                float b = (float) (Math.pow(255 / 128, 1 / 127));
+                try {
+                    byte funcionT[] = new byte[256];
+                    for (int x = 0; x < 256; x++) {
+                        if (x < 128) {
+                            funcionT[x] = (byte) (x);
+                        } else {
+                            funcionT[x] = (byte) (a*Math.pow(b, x));
+                        }
+                    }
+                    LookupTable tabla = new ByteLookupTable(0, funcionT);
+                    LookupOp lop = new LookupOp(tabla, null);
+                    lop.filter(img, img);
+                    vi.getLienzo2D().repaint();
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_OscurecerClarosActionPerformed
+
+    /**
+     * Utiliza la función y=-x para obtener el negativo de una imagen
+     * @param evt 
+     */
+    private void NegativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NegativoActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                try {
+                    byte funcionT[] = new byte[256];
+                    for (int x = 0; x < 256; x++) {
+                        funcionT[x] = (byte) (255-x);
+                    }
+                    LookupTable tabla = new ByteLookupTable(0, funcionT);
+                    LookupOp lop = new LookupOp(tabla, null);
+                    lop.filter(img, img);
+                    vi.getLienzo2D().repaint();
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_NegativoActionPerformed
+
+    /**
      * Método que permite obtener las máscaras de la convolución para el FiltroActionPerformed
      * @param seleccion indice seleccionado en el filtro
      * @return la máscara a usar para la convolución
@@ -1058,23 +1643,37 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Abrir;
+    private javax.swing.JButton Abrir2;
     private javax.swing.JToggleButton Alisar;
+    private javax.swing.JButton Aumentar;
     private javax.swing.JToggleButton BotonElipse;
     private javax.swing.JToggleButton BotonLinea;
     private javax.swing.JToggleButton BotonRectangulo;
     private javax.swing.JSlider Brillo;
     private javax.swing.JSlider Cometa;
     private javax.swing.JSlider Contraste;
+    private javax.swing.JButton ContrasteIluminacion;
+    private javax.swing.JButton ContrasteNormal;
+    private javax.swing.JButton ContrasteOscurecimiento;
+    private javax.swing.JButton Decrementar;
+    private javax.swing.JButton Duplicar;
     private javax.swing.JLabel Estado;
     private javax.swing.JToggleButton Fantasma;
     private javax.swing.JComboBox<String> Filtros;
     private javax.swing.JSlider Grosor;
     private javax.swing.JMenuItem Guardar;
+    private javax.swing.JButton Guardar2;
     private javax.swing.JMenu MenuImagenes;
     private javax.swing.JToggleButton Mover;
+    private javax.swing.JButton Negativo;
     private javax.swing.JMenuItem Nuevo;
+    private javax.swing.JButton Nuevo2;
+    private javax.swing.JButton OscurecerClaros;
     private javax.swing.JButton Paleta;
     private javax.swing.JToggleButton Relleno;
+    private javax.swing.JButton Rotar180;
+    private javax.swing.JSlider TLineal;
+    private javax.swing.JButton TLinealGraph;
     private javax.swing.ButtonGroup TipoDibujo;
     private javax.swing.JToggleButton Transparencia;
     private javax.swing.JButton Volcar;
@@ -1089,8 +1688,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JToolBar.Separator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
+    private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JMenuItem lookUp;
     private javax.swing.JMenuItem rescalar;
+    private javax.swing.JMenuItem tranfAfin;
     // End of variables declaration//GEN-END:variables
 }

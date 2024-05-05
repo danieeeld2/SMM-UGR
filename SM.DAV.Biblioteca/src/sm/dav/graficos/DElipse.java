@@ -15,7 +15,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Ellipse2D;
 
 /**
- *
+ * Clase que hereda de la clase abstracta MiShape. Definde una Elipse a partir de las coordenadas de origen
+ * del rectángulo que la contiene y de la altura y ancho del mismo
  * @author daniel
  */
 public class DElipse extends MiShape {
@@ -24,6 +25,13 @@ public class DElipse extends MiShape {
     private float width;
     private float height;
     
+    /**
+     * Constructor de la clase
+     * @param x Coordenada x del rectangulo que contiene a la Elipse
+     * @param y Coordenada y del rectangulo que contiene a la Elipse
+     * @param width Ancho del rectangulo (Radio horizontal)
+     * @param height Alto del rectangulo (Radio vertical)
+     */
     public DElipse(int x, int y, double width, double height) {
         this.x = x;
         this.y = y;
@@ -31,38 +39,70 @@ public class DElipse extends MiShape {
         this.height = (float) height;
     }
 
+    /**
+     * 
+     * @return devuelve la coordenada x del rectangulo que contiene a la elipse
+     */
     public float getX() {
         return x;
     }
 
+    /**
+     * Establece el valor de la coordenada x del rectángulo que contiene a la elpise
+     * @param x coordenada x
+     */
     public void setX(float x) {
         this.x = x;
     }
 
+    /**
+     * 
+     * @return devuelve la coordenada y del rectangulo que contiene a la elipse
+     */
     public float getY() {
         return y;
     }
 
+    /**
+     * Establece el valor de la coordenada y del rectángulo que contiene a la elpise
+     * @param y coordenada y
+     */
     public void setY(float y) {
         this.y = y;
     }
 
+    /**
+     * 
+     * @return devuelve el ancho del rectangulo que contiene a la elipse
+     */
     public float getWidth() {
         return width;
     }
 
+    /**
+     * Establece el valor del ancho del rectángulo que contiene a la elpise
+     * @param width ancho
+     */
     public void setWidth(float width) {
         this.width = width;
     }
 
+    /**
+     * 
+     * @return devuelve el alto del rectangulo que contiene a la elipse
+     */
     public float getHeight() {
         return height;
     }
 
+    /**
+     * Establece el valor del alto del rectángulo que contiene a la elpise
+     * @param height alto
+     */
     public void setHeight(float height) {
         this.height = height;
     }
-
+    
     @Override
     public void draw(Graphics2D g2d) {        
         g2d.setColor(this.getColor());
@@ -100,7 +140,7 @@ public class DElipse extends MiShape {
             g2d.draw(circulo);
         }
     }
-
+    
     @Override
     public void SetLocation(Point2D pos) {
         this.x = (float) pos.getX();

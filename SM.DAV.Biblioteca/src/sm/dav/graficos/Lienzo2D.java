@@ -69,12 +69,21 @@ public class Lienzo2D extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Método que devuelve la figura seleccionada dado un punto. Comprueba si el punto pasado como argumento
+     * pertenece a alguna figura y, en caso afirmativo, devuelve la primera coincidencia
+     * @param p punto a comprobar
+     * @return La primera figura que cumpla que contiene al punto, null en caso de ninguna
+     */
     private MiShape figuraSeleccionada(Point2D p){
         for(MiShape s:listaFiguras)
             if(s.contains(p)) return s;
         return null;
     }
 
+    /**
+     * Función para indicar a la forma seleccionada que se termina el modo edición
+     */
     public void SalirModoEditar() {
         if(forma != null){
             forma.setEditar(false);
@@ -82,23 +91,42 @@ public class Lienzo2D extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Función para limpiar el panel
+     */
     public void limpiarPanel() {
         listaFiguras.clear();
         this.repaint();
     }
 
+    /**
+     * Función que establece si está o no el modo edición activado
+     * @return true en caso de estar activado, false en caso contrario
+     */
     public boolean isMover() {
         return mover;
     }
 
+    /** 
+     * Función que habilita y deshabilita el modo edición en el lienzo
+     * @param mover habilitar/deshabilitar
+     */
     public void setMover(boolean mover) {
         this.mover = mover;
     }
 
+    /**
+     * Función que devuelve el color interno establecido en el lienzo
+     * @return el color establecido
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Función que establece el color interno en el lienzo
+     * @param color color a establecer
+     */
     public void setColor(Color color) {
         if(mover){
             if(forma != null) {
@@ -109,10 +137,18 @@ public class Lienzo2D extends javax.swing.JPanel {
         this.color = color;
     }
 
+    /**
+     * Función que indica si esta habilitado o deshabilitado el modo de relleno
+     * @return true en caso afirmativo, false en caso contrario
+     */
     public boolean isRelleno() {
         return relleno;
     }
 
+    /**
+     * Establece el modo de relleno en el lienzo
+     * @param relleno habilitar/deshabilitar
+     */
     public void setRelleno(boolean relleno) {
         if(mover){
             if(forma != null) {
@@ -273,6 +309,12 @@ public class Lienzo2D extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Función que gestiona el evento MouseDragged del lienzo. Comprueba si está habilitado o no
+     * el modo edición. En caso de estar habilitado, mueve la forma seleccionada con el cursor. En caso contrario,
+     * redimensiona la figura recién creada hasta donde desplacemos el cursor
+     * @param evt 
+     */
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         if(mover){
             if(forma != null){
@@ -284,6 +326,13 @@ public class Lienzo2D extends javax.swing.JPanel {
         this.repaint();
     }//GEN-LAST:event_formMouseDragged
 
+    /**
+     * Función que gestiona el evento de MousePressed en el lienzo. Esta función comprueba si está habilitado
+     * el modo edición o no. Si no está habilitado, comprueba el tipo de forma seleccionada y crea una nueva forma
+     * de ese tipo, la cual añade al lienzo. En caso contrario, selecciona la forma que contenga al punto y le habilita el
+     * modo edición
+     * @param evt 
+     */
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         if (forma != null) { // Le decimos que saque del modo edición a la última forma
             forma.setEditar(false);
@@ -325,6 +374,11 @@ public class Lienzo2D extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_formMousePressed
 
+    /**
+     * Evento MouseClicked del lienzo. Comprueba si está habilitado el modo edición y, en caso afirmativo, toma
+     * la forma que contenga al punto donde se hizo click y le habilita el modo edición
+     * @param evt 
+     */
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         if(mover){
             if(forma != null) { // Le decimos que saque del modo edición a la última forma
