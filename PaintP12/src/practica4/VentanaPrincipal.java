@@ -39,8 +39,14 @@ import sm.dav.graficos.Lienzo2D;
 import sm.dav.events.LienzoAdapter;
 import sm.dav.events.LienzoEvent;
 import sm.dav.graficos.MiShape;
+import sm.dav.imagen.CambiarColorOp;
+import sm.dav.imagen.PosterizarOp;
+import sm.dav.imagen.RojoOp;
+import sm.image.EqualizationOp;
 import sm.image.KernelProducer;
 import sm.image.LookupTableProducer;
+import sm.image.SepiaOp;
+import sm.image.TintOp;
 
 /**
  *
@@ -56,7 +62,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
-        setSize(960, 960);
+        setSize(1500, 960);
         // 2) Creamos objeto manejador
         manejador = new ManejadorVentanaInterna();
     }
@@ -217,6 +223,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         EspacioColor = new javax.swing.JComboBox<>();
         jSeparator8 = new javax.swing.JToolBar.Separator();
         CombinarBandas = new javax.swing.JButton();
+        Tintar = new javax.swing.JButton();
+        TintarDeslizador = new javax.swing.JSlider();
+        Sepia = new javax.swing.JButton();
+        Ecualizacion = new javax.swing.JButton();
+        Rojo = new javax.swing.JButton();
+        RojoDeslizador = new javax.swing.JSlider();
+        PosterizarIcon = new javax.swing.JButton();
+        Posterizar = new javax.swing.JSlider();
+        jSeparator9 = new javax.swing.JToolBar.Separator();
+        jPanel2 = new javax.swing.JPanel();
+        ColorCambio1 = new javax.swing.JButton();
+        CambiarColor = new javax.swing.JSlider();
+        jPanel3 = new javax.swing.JPanel();
+        ColorCambio2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         Nuevo = new javax.swing.JMenuItem();
@@ -419,11 +439,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1063, Short.MAX_VALUE)
+            .addGap(0, 1503, Short.MAX_VALUE)
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 322, Short.MAX_VALUE)
+            .addGap(0, 303, Short.MAX_VALUE)
         );
 
         jToolBar2.setRollover(true);
@@ -660,6 +680,168 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jToolBar2.add(CombinarBandas);
 
+        Tintar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/tintar.png"))); // NOI18N
+        Tintar.setFocusable(false);
+        Tintar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Tintar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Tintar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TintarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Tintar);
+
+        TintarDeslizador.setValue(0);
+        TintarDeslizador.setMaximumSize(new java.awt.Dimension(70, 16));
+        TintarDeslizador.setPreferredSize(new java.awt.Dimension(65, 16));
+        TintarDeslizador.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TintarDeslizadorStateChanged(evt);
+            }
+        });
+        TintarDeslizador.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TintarDeslizadorFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TintarDeslizadorFocusLost(evt);
+            }
+        });
+        jToolBar2.add(TintarDeslizador);
+
+        Sepia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/sepia.png"))); // NOI18N
+        Sepia.setFocusable(false);
+        Sepia.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Sepia.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Sepia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SepiaActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Sepia);
+
+        Ecualizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/ecualizar.png"))); // NOI18N
+        Ecualizacion.setFocusable(false);
+        Ecualizacion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Ecualizacion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Ecualizacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EcualizacionActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Ecualizacion);
+
+        Rojo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/rojo.png"))); // NOI18N
+        Rojo.setFocusable(false);
+        Rojo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Rojo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Rojo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RojoActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(Rojo);
+
+        RojoDeslizador.setMaximum(255);
+        RojoDeslizador.setMinimum(-510);
+        RojoDeslizador.setValue(20);
+        RojoDeslizador.setMaximumSize(new java.awt.Dimension(70, 16));
+        RojoDeslizador.setPreferredSize(new java.awt.Dimension(65, 16));
+        RojoDeslizador.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                RojoDeslizadorStateChanged(evt);
+            }
+        });
+        RojoDeslizador.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                RojoDeslizadorFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                RojoDeslizadorFocusLost(evt);
+            }
+        });
+        jToolBar2.add(RojoDeslizador);
+
+        PosterizarIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/practica4/posterizar.png"))); // NOI18N
+        PosterizarIcon.setFocusable(false);
+        PosterizarIcon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        PosterizarIcon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(PosterizarIcon);
+
+        Posterizar.setMaximum(20);
+        Posterizar.setMinimum(2);
+        Posterizar.setValue(2);
+        Posterizar.setMaximumSize(new java.awt.Dimension(70, 16));
+        Posterizar.setPreferredSize(new java.awt.Dimension(65, 16));
+        Posterizar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                PosterizarStateChanged(evt);
+            }
+        });
+        Posterizar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                PosterizarFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                PosterizarFocusLost(evt);
+            }
+        });
+        jToolBar2.add(Posterizar);
+        jToolBar2.add(jSeparator9);
+
+        jPanel2.setMaximumSize(new java.awt.Dimension(16, 16));
+        jPanel2.setPreferredSize(new java.awt.Dimension(16, 16));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        ColorCambio1.setBackground(new java.awt.Color(204, 0, 0));
+        ColorCambio1.setFocusable(false);
+        ColorCambio1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ColorCambio1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ColorCambio1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ColorCambio1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(ColorCambio1, java.awt.BorderLayout.CENTER);
+
+        jToolBar2.add(jPanel2);
+
+        CambiarColor.setMaximum(360);
+        CambiarColor.setValue(0);
+        CambiarColor.setMaximumSize(new java.awt.Dimension(70, 16));
+        CambiarColor.setPreferredSize(new java.awt.Dimension(65, 16));
+        CambiarColor.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                CambiarColorStateChanged(evt);
+            }
+        });
+        CambiarColor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                CambiarColorFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                CambiarColorFocusLost(evt);
+            }
+        });
+        jToolBar2.add(CambiarColor);
+
+        jPanel3.setMaximumSize(new java.awt.Dimension(16, 16));
+        jPanel3.setPreferredSize(new java.awt.Dimension(16, 16));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        ColorCambio2.setBackground(new java.awt.Color(255, 255, 51));
+        ColorCambio2.setFocusable(false);
+        ColorCambio2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ColorCambio2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ColorCambio2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ColorCambio2ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(ColorCambio2, java.awt.BorderLayout.CENTER);
+
+        jToolBar2.add(jPanel3);
+
         jMenu1.setText("Archivo");
 
         Nuevo.setText("Nuevo");
@@ -746,7 +928,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1063, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1503, Short.MAX_VALUE)
             .addComponent(Estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(escritorio)
             .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -891,6 +1073,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
                 // Crear una nueva imagen con canal alfa solo si la imagen original tiene canal alfa
                 BufferedImage imgWithAlpha;
+                
+                // Lo dejo comentado porque me da problemas en la P11 con el operador para obtener las bandas
+                /* 
                 if (hasAlpha) {
                     imgWithAlpha = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g = imgWithAlpha.createGraphics();
@@ -900,6 +1085,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     // Si la imagen original no tiene canal alfa, simplemente usarla sin cambios
                     imgWithAlpha = img;
                 }
+                */
+                
+                imgWithAlpha = img;
 
                 VentanaInterna vi = new VentanaInterna();
                 vi.getLienzo2D().setImage(imgWithAlpha);
@@ -1774,14 +1962,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (vi != null) {
             BufferedImage img = vi.getLienzo2D().getImage();
             if (img != null) {
+                float[][] matriz;
                 try {
-                    // Tengo canal alpha
-                    float[][] matriz = {
-                        {0.0F, 0.5F, 0.5F, 0.0F},
-                        {0.5F, 0.0F, 0.5F, 0.0F},
-                        {0.5F, 0.5F, 0.0F, 0.0F},
-                        {0.0F, 0.0F, 0.0F, 1.0F}
-                    };
+                    if(img.getColorModel().hasAlpha()){
+                        matriz = new float[][] {
+                            {0.0F, 0.5F, 0.5F, 0.0F},
+                            {0.5F, 0.0F, 0.5F, 0.0F},
+                            {0.5F, 0.5F, 0.0F, 0.0F},
+                            {0.0F, 0.0F, 0.0F, 1.0F}
+                        };
+                    } else {
+                        matriz = new float[][] {
+                            {0.0F, 0.5F, 0.5F},
+                            {0.5F, 0.0F, 0.5F},
+                            {0.5F, 0.5F, 0.0F}
+                        };
+                    }
                     BandCombineOp bcop = new BandCombineOp(matriz, null);
                     bcop.filter(img.getRaster(), img.getRaster());
                     vi.getLienzo2D().repaint();
@@ -1849,6 +2045,265 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_EspacioColorActionPerformed
+
+    /**
+     * Evento Action del boton Tintar. Usa el operador TintOp del paquete sm.image para
+     * tintar la imagen de un color que seleccione el usuario y con un grado de mezcla de 0.5
+     * @param evt 
+     */
+    private void TintarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TintarActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                Color color = JColorChooser.showDialog(this, "Elije un color", Color.RED);
+                TintOp tintado = new TintOp(color, 0.5f);
+                tintado.filter(img,img);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_TintarActionPerformed
+
+    /**
+     * Evento Action del boton Sepia. Este efecto utiliza el operador SepiaOp del paquete sm.image
+     * para modificar el tono y saturación de la imagen, dando un aspecto de "fotografía antigua"
+     * @param evt 
+     */
+    private void SepiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SepiaActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                SepiaOp sepia = new SepiaOp();
+                sepia.filter(img,img);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_SepiaActionPerformed
+
+    /**
+     * Evento Action del boton Ecualizacion. Este efecto emplea el operador EqualizationOP del paquete sm.image.
+     * Si aplicamos la ecualización a la 3 bandas en RGB vemos que obtenemos un efecto extraño, donde se generan
+     * variaciones de color y "parece que se quema la imagen". Al pasar al espacio YCC y aplicar el efecto solo
+     * sobre el canal Y, obtenemos el efecto deseado, aunque tiene a iluminar en exceso en determinadas imágenes.
+     * (Podríamos usar en su lugar la clase YCbCrColorSpace del paquete sm.image)
+     * @param evt 
+     */
+    private void EcualizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EcualizacionActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_PYCC);
+                ColorConvertOp cop = new ColorConvertOp(cs, null);
+                BufferedImage imgOut = cop.filter(img, null);
+                vi.getLienzo2D().setImage(imgOut);
+                EqualizationOp ecualizacion = new EqualizationOp(0);
+                BufferedImage imgOut2 = ecualizacion.filter(imgOut, null);
+                vi.getLienzo2D().setImage(imgOut2);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_EcualizacionActionPerformed
+
+    /**
+     * Evento FocusGain del deslizador Posterizar. Crea una copia interna de la imagen del lienzo seleccionado
+     * @param evt 
+     */
+    private void PosterizarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PosterizarFocusGained
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            ColorModel cm = vi.getLienzo2D().getImage().getColorModel();
+            WritableRaster raster = vi.getLienzo2D().getImage().copyData(null);
+            boolean alfaPre = vi.getLienzo2D().getImage().isAlphaPremultiplied();
+            imgFuente = new BufferedImage(cm, raster, alfaPre, null);
+            Color color = JColorChooser.showDialog(this, "Elije un color", Color.RED);
+        }
+    }//GEN-LAST:event_PosterizarFocusGained
+
+    /**
+     * Evecto FocusLost del deslizador Posterizar. Elimina la copia interna creada durante el FocusGain
+     * @param evt 
+     */
+    private void PosterizarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PosterizarFocusLost
+        imgFuente = null;
+    }//GEN-LAST:event_PosterizarFocusLost
+
+    /**
+     * Evento StateChange del deslizador Posterizar. Reduce el número de colores de una imagen al número
+     * de nieveles especificado por el desliazdor.
+     * @param evt 
+     */
+    private void PosterizarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_PosterizarStateChanged
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                PosterizarOp posterizar = new PosterizarOp(Posterizar.getValue());
+                BufferedImage imgDest = posterizar.filter(imgFuente, null);
+                vi.getLienzo2D().setImage(imgDest);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_PosterizarStateChanged
+
+    /**
+     * Evento Action del boton Rojo. Usa el operador propio RojoOp para resaltar el color
+     * rojo de una imagen, dejando el resto a escala de grises. He puesto el filtro por defecto
+     * a 20
+     * @param evt 
+     */
+    private void RojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RojoActionPerformed
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                RojoOp rojo = new RojoOp(20);
+                BufferedImage imgDest = rojo.filter(img, null);
+                vi.getLienzo2D().setImage(imgDest);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_RojoActionPerformed
+
+    /**
+     * Evento Action del boton ColorCambio1. Sirve para elergir el color C1 del operador CambiarColor
+     * @param evt 
+     */
+    private void ColorCambio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColorCambio1ActionPerformed
+        Color color = JColorChooser.showDialog(this, "Elije un color", Color.RED);
+        ColorCambio1.setBackground(color);
+    }//GEN-LAST:event_ColorCambio1ActionPerformed
+
+    /**
+     * Action del boton ColorCambio2. Sirve para elergir el color C2 del operador CambiarColor
+     * @param evt 
+     */
+    private void ColorCambio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ColorCambio2ActionPerformed
+        Color color = JColorChooser.showDialog(this, "Elije un color", Color.YELLOW);
+        ColorCambio2.setBackground(color);
+    }//GEN-LAST:event_ColorCambio2ActionPerformed
+
+    /**
+     * Evento FocusGain del deslizador CambiarColor. Crea una copia interna de la imagen del lienzo seleccionado
+     * @param evt 
+     */
+    private void CambiarColorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CambiarColorFocusGained
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            ColorModel cm = vi.getLienzo2D().getImage().getColorModel();
+            WritableRaster raster = vi.getLienzo2D().getImage().copyData(null);
+            boolean alfaPre = vi.getLienzo2D().getImage().isAlphaPremultiplied();
+            imgFuente = new BufferedImage(cm, raster, alfaPre, null);
+        }
+    }//GEN-LAST:event_CambiarColorFocusGained
+
+    /**
+     * Evento FocusLost del deslizador CambiarColor. Elimina la copia creada durante el FocusGain
+     * @param evt 
+     */
+    private void CambiarColorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CambiarColorFocusLost
+        imgFuente = null;
+    }//GEN-LAST:event_CambiarColorFocusLost
+
+    /**
+     * Evento StateChange del deslizador CambiarColor. Realiza la operación de cambio de color
+     * estableciendo el umbral al valor indicado por el propio desliazdor.
+     * @param evt 
+     */
+    private void CambiarColorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CambiarColorStateChanged
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                CambiarColorOp cambiarcolor = new CambiarColorOp(ColorCambio1.getBackground(), ColorCambio2.getBackground(), CambiarColor.getValue());
+                BufferedImage imgDest = cambiarcolor.filter(imgFuente, null);
+                vi.getLienzo2D().setImage(imgDest);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_CambiarColorStateChanged
+
+    /**
+     * Evento FocusGain del deslizador TintarDeslizador. Crea una copia interna de la imagen del lienzo seleccionado
+     * @param evt 
+     */
+    private void TintarDeslizadorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TintarDeslizadorFocusGained
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            ColorModel cm = vi.getLienzo2D().getImage().getColorModel();
+            WritableRaster raster = vi.getLienzo2D().getImage().copyData(null);
+            boolean alfaPre = vi.getLienzo2D().getImage().isAlphaPremultiplied();
+            imgFuente = new BufferedImage(cm, raster, alfaPre, null);
+        }
+    }//GEN-LAST:event_TintarDeslizadorFocusGained
+
+    /**
+     * Evento FocusLost del deslizador TintarDeslizador. Elimina la copia interna creada durante el FocusLost.
+     * @param evt 
+     */
+    private void TintarDeslizadorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TintarDeslizadorFocusLost
+        imgFuente = null;
+    }//GEN-LAST:event_TintarDeslizadorFocusLost
+
+    /**
+     * Evento StateChanged del deslizador TintarDeslizador. Toma el valor deslizador para determinar el valor de
+     * alpha en la operación de tintado (Usa el color rojo por defecto para el tintado)
+     * @param evt 
+     */
+    private void TintarDeslizadorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TintarDeslizadorStateChanged
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                float value = TintarDeslizador.getValue()/100.0f;
+                TintOp tintar = new TintOp(Color.RED, value);
+                BufferedImage imgDest = tintar.filter(imgFuente, null);
+                vi.getLienzo2D().setImage(imgDest);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_TintarDeslizadorStateChanged
+
+    /**
+     * Evento FocusGain del deslizador RojoDeslizador. Crea una copia interna de la imagen del lienzo seleccionado
+     * @param evt 
+     */
+    private void RojoDeslizadorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_RojoDeslizadorFocusGained
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            ColorModel cm = vi.getLienzo2D().getImage().getColorModel();
+            WritableRaster raster = vi.getLienzo2D().getImage().copyData(null);
+            boolean alfaPre = vi.getLienzo2D().getImage().isAlphaPremultiplied();
+            imgFuente = new BufferedImage(cm, raster, alfaPre, null);
+        }
+    }//GEN-LAST:event_RojoDeslizadorFocusGained
+
+    /**
+     * Evento FocusLost del desliazdor RojoDeslizador. Elimina la copia interna creada durante el FocusGain
+     * @param evt 
+     */
+    private void RojoDeslizadorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_RojoDeslizadorFocusLost
+        imgFuente = null;
+    }//GEN-LAST:event_RojoDeslizadorFocusLost
+
+    /**
+     * Evento StateChanged del deslizador RojoDeslizador. Toma el valor del desliazdor para determinar el valor
+     * del umbral de la operacion RojoOp.
+     * @param evt 
+     */
+    private void RojoDeslizadorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RojoDeslizadorStateChanged
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                RojoOp rojo = new RojoOp(RojoDeslizador.getValue());
+                BufferedImage imgDest = rojo.filter(imgFuente, null);
+                vi.getLienzo2D().setImage(imgDest);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_RojoDeslizadorStateChanged
 
     /**
      * Método que permite obtener las máscaras de la convolución para el
@@ -2001,6 +2456,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JToggleButton BotonLinea;
     private javax.swing.JToggleButton BotonRectangulo;
     private javax.swing.JSlider Brillo;
+    private javax.swing.JSlider CambiarColor;
+    private javax.swing.JButton ColorCambio1;
+    private javax.swing.JButton ColorCambio2;
     private javax.swing.JButton CombinarBandas;
     private javax.swing.JSlider Cometa;
     private javax.swing.JSlider Contraste;
@@ -2009,6 +2467,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton ContrasteOscurecimiento;
     private javax.swing.JButton Decrementar;
     private javax.swing.JButton Duplicar;
+    private javax.swing.JButton Ecualizacion;
     private javax.swing.JComboBox<String> EspacioColor;
     private javax.swing.JLabel Estado;
     private javax.swing.JToggleButton Fantasma;
@@ -2023,10 +2482,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton Nuevo2;
     private javax.swing.JButton OscurecerClaros;
     private javax.swing.JButton Paleta;
+    private javax.swing.JSlider Posterizar;
+    private javax.swing.JButton PosterizarIcon;
     private javax.swing.JToggleButton Relleno;
+    private javax.swing.JButton Rojo;
+    private javax.swing.JSlider RojoDeslizador;
     private javax.swing.JButton Rotar180;
+    private javax.swing.JButton Sepia;
     private javax.swing.JSlider TLineal;
     private javax.swing.JButton TLinealGraph;
+    private javax.swing.JButton Tintar;
+    private javax.swing.JSlider TintarDeslizador;
     private javax.swing.ButtonGroup TipoDibujo;
     private javax.swing.JToggleButton Transparencia;
     private javax.swing.JButton Volcar;
@@ -2040,6 +2506,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -2048,6 +2516,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JToolBar.Separator jSeparator8;
+    private javax.swing.JToolBar.Separator jSeparator9;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JMenuItem lookUp;
