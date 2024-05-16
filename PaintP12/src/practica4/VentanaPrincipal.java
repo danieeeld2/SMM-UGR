@@ -48,6 +48,7 @@ import sm.dav.graficos.MiShape;
 import sm.dav.imagen.CambiarColorOp;
 import sm.dav.imagen.PosterizarOp;
 import sm.dav.imagen.RojoOp;
+import sm.dav.imagen.SaturacionOp;
 import sm.image.EqualizationOp;
 import sm.image.KernelProducer;
 import sm.image.LookupTableProducer;
@@ -270,6 +271,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         CambiarColor = new javax.swing.JSlider();
         jPanel3 = new javax.swing.JPanel();
         ColorCambio2 = new javax.swing.JButton();
+        jSeparator10 = new javax.swing.JToolBar.Separator();
+        S = new javax.swing.JLabel();
+        SaturacionSlider = new javax.swing.JSlider();
         RGBLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -875,6 +879,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel3.add(ColorCambio2, java.awt.BorderLayout.CENTER);
 
         jToolBar2.add(jPanel3);
+        jToolBar2.add(jSeparator10);
+
+        S.setText("Sat.");
+        jToolBar2.add(S);
+
+        SaturacionSlider.setValue(0);
+        SaturacionSlider.setMaximumSize(new java.awt.Dimension(70, 16));
+        SaturacionSlider.setPreferredSize(new java.awt.Dimension(65, 16));
+        SaturacionSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                SaturacionSliderStateChanged(evt);
+            }
+        });
+        SaturacionSlider.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                SaturacionSliderFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                SaturacionSliderFocusLost(evt);
+            }
+        });
+        jToolBar2.add(SaturacionSlider);
 
         RGBLabel.setText("RGB");
 
@@ -2351,6 +2377,46 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_RojoDeslizadorStateChanged
 
     /**
+     * Evento FocusGain del deslizador SaturacionSlider. Crea una copia de la imagen del frame seleecionado
+     * @param evt 
+     */
+    private void SaturacionSliderFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_SaturacionSliderFocusGained
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            ColorModel cm = vi.getLienzo2D().getImage().getColorModel();
+            WritableRaster raster = vi.getLienzo2D().getImage().copyData(null);
+            boolean alfaPre = vi.getLienzo2D().getImage().isAlphaPremultiplied();
+            imgFuente = new BufferedImage(cm, raster, alfaPre, null);
+        }
+    }//GEN-LAST:event_SaturacionSliderFocusGained
+
+    /**
+     * Evento FocusLost del del desliazdor SaturacionSlider. Elimina la copia creada durante el FocusGain
+     * @param evt 
+     */
+    private void SaturacionSliderFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_SaturacionSliderFocusLost
+        imgFuente = null;
+    }//GEN-LAST:event_SaturacionSliderFocusLost
+
+    /**
+     * Evento StateChange del deslizador SaturacionSlider. Hace uso del operador propio SaturacionOp
+     * para alterar los valores de S por debajo del umbral establecido por el valor del deslizador
+     * @param evt 
+     */
+    private void SaturacionSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SaturacionSliderStateChanged
+        VentanaInterna vi = (VentanaInterna) (escritorio.getSelectedFrame());
+        if (vi != null) {
+            BufferedImage img = vi.getLienzo2D().getImage();
+            if(img != null) {
+                SaturacionOp saturar = new SaturacionOp(SaturacionSlider.getValue()/100f);
+                BufferedImage imgDest = saturar.filter(imgFuente, null);
+                vi.getLienzo2D().setImage(imgDest);
+                vi.getLienzo2D().repaint();
+            }
+        }
+    }//GEN-LAST:event_SaturacionSliderStateChanged
+
+    /**
      * Método que permite obtener las máscaras de la convolución para el
      * FiltroActionPerformed
      *
@@ -2534,6 +2600,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton Rojo;
     private javax.swing.JSlider RojoDeslizador;
     private javax.swing.JButton Rotar180;
+    private javax.swing.JLabel S;
+    private javax.swing.JSlider SaturacionSlider;
     private javax.swing.JButton Sepia;
     private javax.swing.JSlider TLineal;
     private javax.swing.JButton TLinealGraph;
@@ -2555,6 +2623,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator10;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
