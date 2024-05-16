@@ -120,7 +120,12 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jToolBar1" pref="1503" max="32767" attributes="0"/>
-          <Component id="Estado" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="Estado" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="RGBLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
           <Component id="escritorio" alignment="0" max="32767" attributes="0"/>
           <Component id="jToolBar2" alignment="0" max="32767" attributes="0"/>
       </Group>
@@ -134,7 +139,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jToolBar2" min="-2" pref="35" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="Estado" min="-2" pref="11" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="Estado" alignment="3" min="-2" pref="11" max="-2" attributes="0"/>
+                  <Component id="RGBLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -400,7 +408,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="303" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="299" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -910,5 +918,10 @@
         </Container>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="RGBLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="RGB"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

@@ -6,9 +6,15 @@ package practica4;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.PointerInfo;
+import java.awt.Robot;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BandCombineOp;
@@ -164,6 +170,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             setAtributosSelectedForma(evt.getForma());
         }
     }
+    
+    /**
+     * Clase manejadora para eventos de mouseMoved sobre un lienzo. Sirve para coger el color RGB del pixel e indicarlo
+     * en la barra de estado
+     */
+    public class LienzoMove extends MouseMotionAdapter {
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+            Point point = pointerInfo.getLocation();
+            int x = (int) point.getX();
+            int y = (int) point.getY();
+            try {
+                Robot robot = new Robot();
+                Color color = robot.getPixelColor(x, y);
+                int red = color.getRed();
+                int green = color.getGreen();
+                int blue = color.getBlue();
+                RGBLabel.setText("(R: " + red + ", G: " + green + ", B: " + blue + ")");
+                // System.out.println("RGB: " + red + ", " + green + ", " + blue);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -237,6 +270,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         CambiarColor = new javax.swing.JSlider();
         jPanel3 = new javax.swing.JPanel();
         ColorCambio2 = new javax.swing.JButton();
+        RGBLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         Nuevo = new javax.swing.JMenuItem();
@@ -443,7 +477,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 303, Short.MAX_VALUE)
+            .addGap(0, 299, Short.MAX_VALUE)
         );
 
         jToolBar2.setRollover(true);
@@ -842,6 +876,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jToolBar2.add(jPanel3);
 
+        RGBLabel.setText("RGB");
+
         jMenu1.setText("Archivo");
 
         Nuevo.setText("Nuevo");
@@ -929,7 +965,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1503, Short.MAX_VALUE)
-            .addComponent(Estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Estado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(RGBLabel)
+                .addContainerGap())
             .addComponent(escritorio)
             .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -942,7 +982,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Estado, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Estado, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RGBLabel)))
         );
 
         pack();
@@ -999,6 +1041,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         g2d.dispose();
 
         vi.getLienzo2D().setImage(img);
+        
+        // Enlazar con el manejador para obtener RGB
+        vi.getLienzo2D().addMouseMotionListener(new LienzoMove());
 
         MiManejadorLienzo manejadorLienzo = new MiManejadorLienzo();
         vi.getLienzo2D().addLienzoListener(manejadorLienzo);
@@ -1094,6 +1139,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 vi.addInternalFrameListener(manejador);
                 MiManejadorLienzo manejadorLienzo = new MiManejadorLienzo();
                 vi.getLienzo2D().addLienzoListener(manejadorLienzo);
+                vi.getLienzo2D().addMouseMotionListener(new LienzoMove());
                 this.escritorio.add(vi);
                 vi.setTitle(f.getName());
                 vi.setVisible(true);
@@ -2117,7 +2163,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             WritableRaster raster = vi.getLienzo2D().getImage().copyData(null);
             boolean alfaPre = vi.getLienzo2D().getImage().isAlphaPremultiplied();
             imgFuente = new BufferedImage(cm, raster, alfaPre, null);
-            Color color = JColorChooser.showDialog(this, "Elije un color", Color.RED);
         }
     }//GEN-LAST:event_PosterizarFocusGained
 
@@ -2484,6 +2529,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton Paleta;
     private javax.swing.JSlider Posterizar;
     private javax.swing.JButton PosterizarIcon;
+    private javax.swing.JLabel RGBLabel;
     private javax.swing.JToggleButton Relleno;
     private javax.swing.JButton Rojo;
     private javax.swing.JSlider RojoDeslizador;
